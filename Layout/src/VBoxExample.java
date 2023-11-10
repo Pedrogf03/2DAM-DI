@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class App extends Application {
+public class VBoxExample extends Application {
 
   @Override
   public void start(Stage stage) throws Exception {
