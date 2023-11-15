@@ -6,17 +6,17 @@
   "configurations": [
     {
       "type": "java",
-      "name": "Calculadora",
-      "request": "launch",
-      "mainClass": "Model.Calculadora",
-      "projectName": "Ejercicios_ef3f4ba8",
-      "vmArgs": "--module-path 'C:/Program Files/Java/javafx-sdk-21.0.1/lib' --add-modules javafx.controls,javafx.fxml"
-    },
-    {
-      "type": "java",
       "name": "Current File",
       "request": "launch",
       "mainClass": "${file}"
+    },
+    {
+      "type": "java",
+      "name": "Calculadora",
+      "request": "launch",
+      "mainClass": "Model.Calculadora",
+      "projectName": "EJ1_61f7a145",
+      "vmArgs": "--module-path 'C:/Program Files/Java/javafx-sdk-21.0.1/lib' --add-modules javafx.controls,javafx.fxml"
     }
   ]
 }
