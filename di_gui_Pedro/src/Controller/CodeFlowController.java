@@ -20,6 +20,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -39,6 +40,18 @@ public class CodeFlowController implements Initializable {
     String fileName = file.getName();
     int dotIndex = fileName.lastIndexOf('.');
     return (dotIndex == -1) ? "" : fileName.substring(dotIndex);
+  }
+
+  // Metodo para borrar imagen si ya existe aunque tenga una extension distinta.
+  private void deleteIfExistsWithDifferentExtensions(Path path, String... extensions) {
+    for (String extension : extensions) {
+      try {
+        Files.deleteIfExists(Paths.get(path.toString() + extension));
+        System.out.println(Paths.get(path.toString() + extension));
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
   }
 
   private String imagePath;
@@ -101,10 +114,14 @@ public class CodeFlowController implements Initializable {
         File file = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
         if (file != null) {
           // Define la ruta de destino
-          Path dest = Paths.get("img/", "proyecto" + rs.getInt(1) + "Img" + getFileExtension(file));
+          Path destPath = Paths.get("img/", "proyecto" + rs.getInt(1) + "Img");
+
+          deleteIfExistsWithDifferentExtensions(destPath, ".jpg", ".png", ".jpeg");
+
+          Path dest = Paths.get(destPath.toString() + getFileExtension(file));
 
           // Copia el archivo
-          Files.copy(file.toPath(), dest);
+          Files.copy(file.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
 
           imagePath = dest.toString();
 
