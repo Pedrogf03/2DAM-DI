@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
@@ -18,13 +19,16 @@
    <children>
       <VBox maxWidth="100.0" minWidth="100.0" prefHeight="500.0" prefWidth="100.0" style="-fx-background-color: #FFC107;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="newProjectButton" mnemonicParsing="false" onAction="#showNewProjectTab" prefHeight="70.0" prefWidth="100.0" style="-fx-background-color: none;" text="+">
+            <Button fx:id="newProjectButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showNewProjectTab" prefHeight="96.0" prefWidth="100.0" style="-fx-background-color: none;">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
                <font>
                   <Font name="System Bold" size="48.0" />
                </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="PLUS_CIRCLE" wrappingWidth="41.942874908447266" />
+               </graphic>
             </Button>
          </children>
       </VBox>

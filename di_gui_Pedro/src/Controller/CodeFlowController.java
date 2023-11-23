@@ -35,25 +35,6 @@ public class CodeFlowController implements Initializable {
 
   // ---- File
 
-  // Método para obtener la extensión del archivo
-  private String getFileExtension(File file) {
-    String fileName = file.getName();
-    int dotIndex = fileName.lastIndexOf('.');
-    return (dotIndex == -1) ? "" : fileName.substring(dotIndex);
-  }
-
-  // Metodo para borrar imagen si ya existe aunque tenga una extension distinta.
-  private void deleteIfExistsWithDifferentExtensions(Path path, String... extensions) {
-    for (String extension : extensions) {
-      try {
-        Files.deleteIfExists(Paths.get(path.toString() + extension));
-        System.out.println(Paths.get(path.toString() + extension));
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
-  }
-
   private String imagePath;
 
   // ---- JavaFX
@@ -114,11 +95,7 @@ public class CodeFlowController implements Initializable {
         File file = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
         if (file != null) {
           // Define la ruta de destino
-          Path destPath = Paths.get("img/", "proyecto" + rs.getInt(1) + "Img");
-
-          deleteIfExistsWithDifferentExtensions(destPath, ".jpg", ".png", ".jpeg");
-
-          Path dest = Paths.get(destPath.toString() + getFileExtension(file));
+          Path dest = Paths.get("img/", file.getName());
 
           // Copia el archivo
           Files.copy(file.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
