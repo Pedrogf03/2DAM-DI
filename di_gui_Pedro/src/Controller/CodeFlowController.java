@@ -10,156 +10,121 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.scene.Node;
 import javafx.util.Callback;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.sql.*;
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
+import java.util.Set;
+
+import DAO.DataBase;
+import DAO.FileFun;
+import Model.Proyecto;
 
 public class CodeFlowController implements Initializable {
 
-  // ---- SQL
-  private static String driver = "com.mysql.cj.jdbc.Driver";
-  private static String url = "jdbc:mysql://localhost/codeflow";
-  private static String user = "root";
-  private static String passwd = "123456";
+  private Set<Proyecto> proyectos;
 
-  // ---- File
+  // ---- FileFun
 
-  private String imagePath;
+  private FileFun file = new FileFun();
 
   // ---- JavaFX
 
   @FXML
-  private Button createProjectButton;
+  private AnchorPane confirmAlert;
+  @FXML
+  private Button confirmButton;
+  @FXML
+  private Text confirmMsg;
 
   @FXML
+  private Button createProjectButton;
+  @FXML
   private TextArea descripcion;
-
+  @FXML
+  private DatePicker fecha_final;
+  @FXML
+  private DatePicker fecha_inicio;
+  @FXML
+  private Button fileChooser;
+  @FXML
+  private TextField nombre;
   @FXML
   private Text errorMsg;
 
   @FXML
-  private DatePicker fecha_final;
-
-  @FXML
-  private DatePicker fecha_inicio;
-
-  @FXML
-  private Button fileChooser;
-
-  @FXML
   private Button newProjectButton;
-
   @FXML
   private AnchorPane newProjectTab;
 
   @FXML
-  private TextField nombre;
-
-  @FXML
   void showNewProjectTab(ActionEvent event) {
-
     newProjectTab.setVisible(true);
     newProjectTab.setDisable(false);
+  }
 
+  @FXML
+  void confirmProject(ActionEvent event) {
+    confirmAlert.setVisible(false);
+    confirmAlert.setDisable(true);
   }
 
   @FXML
   void fileSelector(ActionEvent event) {
-
-    try {
-
-      Class.forName(driver);
-
-      Connection conn = DriverManager.getConnection(url, user, passwd);
-
-      PreparedStatement ps = conn.prepareStatement("SELECT MAX(idProyecto) FROM Proyecto");
-
-      ResultSet rs = ps.executeQuery();
-
-      if (rs.next()) {
-        // Crear la carpeta de destino.
-
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg"));
-        File file = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
-        if (file != null) {
-          // Define la ruta de destino
-          Path dest = Paths.get("img/", file.getName());
-
-          // Copia el archivo
-          Files.copy(file.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
-
-          imagePath = dest.toString();
-
-          this.fileChooser.setText(file.getAbsolutePath());
-
-        }
-
-      }
-
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
+    file.seleccionarImagen(fileChooser, event);
   }
 
   @FXML
   void createProject(ActionEvent event) {
 
-    try {
+    // Comprobación de que no haya campos obligatorios en blanco.
+    if (nombre.getText().equals("")) {
+      errorMsg.setText("Introduzca el nombre del proyecto");
+      errorMsg.setVisible(true);
+    } else if (descripcion.getText().equals("")) {
+      errorMsg.setText("Introduzca la descripción del proyecto");
+      errorMsg.setVisible(true);
+    } else if (fecha_inicio.getValue() == null) {
+      errorMsg.setText("Introduzca la fecha de inicio del proyecto.");
+      errorMsg.setVisible(true);
+    } else if (fecha_final.getValue() == null) {
+      errorMsg.setText("Introduzca la fecha de final del proyecto.");
+      errorMsg.setVisible(true);
+    } else if (fecha_final.getValue().compareTo(fecha_inicio.getValue()) < 0) {
+      errorMsg.setText("La fecha de final no puede ser anterior a la fecha de inicio.");
+      errorMsg.setVisible(true);
+    } else {
+      // Creación e inserción en base de datos del proyecto.
+      Proyecto p = new Proyecto(nombre.getText(), descripcion.getText(), file.imagenProyecto, Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()));
+      if (p.crearProyecto()) {
+        newProjectTab.setVisible(false);
+        newProjectTab.setDisable(true);
 
-      Class.forName(driver);
-
-      Connection conn = DriverManager.getConnection(url, user, passwd);
-
-      PreparedStatement ps = conn.prepareStatement("INSERT INTO Proyecto (nombre, descripcion, imagen, fecha_inicio, fecha_final) VALUES (?, ?, ?, ?, ?)");
-
-      if (nombre.getText().equals("") || descripcion.getText().equals("") || fecha_inicio.getValue() == null || fecha_final.getValue() == null) {
-        errorMsg.setVisible(true);
+        // Mensaje de confirmación.
+        confirmMsg.setText("Proyecto creado correctamente");
+        confirmAlert.setVisible(true);
+        confirmAlert.setDisable(false);
       } else {
-
-        ps.setString(1, nombre.getText());
-        ps.setString(2, descripcion.getText());
-
-        // Comprobar si se ha subido una imagen.
-        if (imagePath != "") {
-          ps.setString(3, imagePath);
-        } else {
-          ps.setString(3, null);
-        }
-
-        ps.setDate(4, Date.valueOf(fecha_inicio.getValue()));
-        ps.setDate(5, Date.valueOf(fecha_final.getValue()));
-
-        int rows = ps.executeUpdate();
-
-        if (rows > 0) {
-          System.out.println("Registro insertado con éxito.");
-        }
-
+        // Mensaje de confirmación.
+        confirmMsg.setText("Ha ocurrido un error inesperado");
+        confirmAlert.setVisible(true);
+        confirmAlert.setDisable(false);
       }
 
-    } catch (ClassNotFoundException e) {
-      e.printStackTrace();
-    } catch (SQLException e) {
-      e.printStackTrace();
+      resetForm();
+
     }
 
+  }
+
+  public void resetForm() {
+    nombre.setText(null);
+    descripcion.setText(null);
+    fileChooser.setText("📁");
+    fecha_inicio.setValue(null);
+    fecha_final.setValue(null);
   }
 
   @Override
@@ -190,11 +155,14 @@ public class CodeFlowController implements Initializable {
             super.updateItem(item, empty);
 
             // Deshabilita las fechas anteriores al día actual mas uno
-            setDisable(empty || item.compareTo(LocalDate.now().plusDays(1)) < 0);
+            setDisable(empty || item.compareTo(LocalDate.now()) < 0);
           }
         };
       }
     });
+
+    DataBase db = new DataBase();
+    proyectos = db.getProyectos();
 
   }
 

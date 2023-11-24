@@ -86,12 +86,35 @@
                <font>
                   <Font name="Franklin Gothic Demi" size="12.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Text fx:id="errorMsg" fill="RED" layoutX="240.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Faltan campos obligatorios (*)" visible="false">
+            <Text fx:id="errorMsg" fill="RED" layoutX="245.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
                <font>
                   <Font name="Franklin Gothic Demi" size="12.0" />
                </font>
             </Text>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="confirmAlert" layoutX="283.0" layoutY="178.0" prefHeight="151.0" prefWidth="335.0" style="-fx-background-color: #0C1640; -fx-border-color: #FFC107;" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+         <children>
+            <Text fx:id="confirmMsg" fill="#ffc107" layoutX="15.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" wrappingWidth="305.20001220703125">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="24.0" />
+               </font>
+            </Text>
+            <Button fx:id="confirmButton" layoutX="103.0" layoutY="110.0" mnemonicParsing="false" onAction="#confirmProject" prefHeight="26.0" prefWidth="130.0" style="-fx-background-color: #FFC107;" text="Aceptar">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="13.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
    </children>
