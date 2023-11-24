@@ -11,7 +11,7 @@ public class Proyecto implements Comparable<Proyecto> {
   private int idProyecto;
   private String nombre;
   private String descripcion;
-  private String imagen = "img/defaultProjectImg.png";
+  private String imagen = "defaultProjectImg.png";
   private Date fecha_inicio;
   private Date fecha_final;
 

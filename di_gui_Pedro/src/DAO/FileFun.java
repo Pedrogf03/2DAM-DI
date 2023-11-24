@@ -27,12 +27,12 @@ public class FileFun {
       File file = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
       if (file != null) {
         // Define la ruta de destino
-        Path dest = Paths.get("img/", file.getName());
+        Path dest = Paths.get("bin/img/", file.getName());
 
         // Copia el archivo
         Files.copy(file.toPath(), dest, StandardCopyOption.REPLACE_EXISTING);
 
-        imagenProyecto = dest.toString();
+        imagenProyecto = file.getName();
 
         b.setText(file.getAbsolutePath());
 

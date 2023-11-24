@@ -3,12 +3,20 @@ package Controller;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
@@ -60,6 +68,9 @@ public class CodeFlowController implements Initializable {
   private AnchorPane newProjectTab;
 
   @FXML
+  private FlowPane flowPane;
+
+  @FXML
   void showNewProjectTab(ActionEvent event) {
     newProjectTab.setVisible(true);
     newProjectTab.setDisable(false);
@@ -106,6 +117,7 @@ public class CodeFlowController implements Initializable {
         confirmMsg.setText("Proyecto creado correctamente");
         confirmAlert.setVisible(true);
         confirmAlert.setDisable(false);
+        mostrarProyectos();
       } else {
         // Mensaje de confirmación.
         confirmMsg.setText("Ha ocurrido un error inesperado");
@@ -125,6 +137,44 @@ public class CodeFlowController implements Initializable {
     fileChooser.setText("📁");
     fecha_inicio.setValue(null);
     fecha_final.setValue(null);
+  }
+
+  public void mostrarProyectos() {
+    DataBase db = new DataBase();
+    proyectos = db.getProyectos();
+
+    flowPane.getChildren().clear();
+
+    if (!proyectos.isEmpty()) {
+      for (Proyecto p : proyectos) {
+        try {
+          // Cargar la imagen desde la carpeta de recursos
+          Image image = new Image(getClass().getResource("/img/" + p.getImagen()).toExternalForm());
+          ImageView imageView = new ImageView(image);
+
+          // Establecer el ancho y alto fijos
+          imageView.setFitWidth(216.78);
+          imageView.setFitHeight(122.5);
+
+          // Crear un label con el nombre del proyecto
+          Label label = new Label(p.getNombre());
+          // Cambiar la fuente a Franklin Gothic Demi
+          label.setFont(Font.font("Franklin Gothic Demi"));
+          // Cambiar el color del texto a blanco
+          label.setTextFill(Color.web("#FFC107"));
+
+          // Crear un VBox y añadir la imagen y el label
+          VBox vbox = new VBox();
+          vbox.setPadding(new Insets(10, 10, 10, 10));
+          vbox.getChildren().addAll(imageView, label);
+
+          // Añadir el VBox al FlowPane
+          flowPane.getChildren().add(vbox);
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
   }
 
   @Override
@@ -161,8 +211,7 @@ public class CodeFlowController implements Initializable {
       }
     });
 
-    DataBase db = new DataBase();
-    proyectos = db.getProyectos();
+    mostrarProyectos();
 
   }
 
