@@ -61,6 +61,8 @@ public class CodeFlowController implements Initializable {
   private TextField nombre;
   @FXML
   private Text errorMsg;
+  @FXML
+  private Button close;
 
   @FXML
   private Button newProjectButton;
@@ -69,6 +71,18 @@ public class CodeFlowController implements Initializable {
 
   @FXML
   private FlowPane flowPane;
+
+  @FXML
+  void closeWindow(ActionEvent event) {
+    if (!nombre.getText().equals("") || !descripcion.getText().equals("") || fecha_inicio.getValue() != null || fecha_final.getValue() != null) {
+      confirmMsg.setText("Va a perder todos los datos introducidos");
+      confirmAlert.setVisible(true);
+      confirmAlert.setDisable(false);
+    } else {
+      newProjectTab.setVisible(false);
+      newProjectTab.setDisable(true);
+    }
+  }
 
   @FXML
   void showNewProjectTab(ActionEvent event) {

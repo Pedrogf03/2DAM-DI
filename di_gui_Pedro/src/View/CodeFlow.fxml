@@ -20,7 +20,12 @@
    <children>
       <VBox maxWidth="100.0" minWidth="100.0" prefHeight="500.0" prefWidth="100.0" style="-fx-background-color: #FFC107;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Button fx:id="newProjectButton" maxWidth="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showNewProjectTab" prefHeight="96.0" prefWidth="100.0" style="-fx-background-color: none;">
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../bin/img/CodeFlowIcon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="newProjectButton" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#showNewProjectTab" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
@@ -39,7 +44,7 @@
          </font>
       </Text>
       <FlowPane fx:id="flowPane" layoutX="120.0" layoutY="93.0" prefHeight="395.0" prefWidth="766.0" AnchorPane.bottomAnchor="11.800000000000011" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="13.600000000000023" AnchorPane.topAnchor="92.80000000000001" />
-      <AnchorPane fx:id="newProjectTab" disable="true" layoutX="100.0" layoutY="50.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #0C1640;" visible="false">
+      <AnchorPane fx:id="newProjectTab" layoutX="100.0" layoutY="50.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #0C1640;">
          <effect>
             <DropShadow />
          </effect>
@@ -71,7 +76,10 @@
                   <Font name="Franklin Gothic Demi" size="14.0" />
                </font>
             </Label>
-            <Button fx:id="fileChooser" layoutX="14.0" layoutY="333.0" mnemonicParsing="false" onAction="#fileSelector" prefHeight="26.0" prefWidth="182.0" style="-fx-background-color: #FFC107;" text="📁" textFill="WHITE" />
+            <Button fx:id="fileChooser" layoutX="14.0" layoutY="333.0" mnemonicParsing="false" onAction="#fileSelector" prefHeight="26.0" prefWidth="182.0" style="-fx-background-color: #FFC107;" text="📁" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
             <DatePicker fx:id="fecha_inicio" editable="false" layoutX="233.0" layoutY="109.0" prefHeight="26.0" prefWidth="182.0" />
             <Label layoutX="233.0" layoutY="93.0" text="Fecha de inicio" textFill="WHITE">
                <font>
@@ -97,9 +105,17 @@
                   <Font name="Franklin Gothic Demi" size="12.0" />
                </font>
             </Text>
+            <Button fx:id="close" layoutX="665.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: none;">
+               <graphic>
+                  <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
-      <AnchorPane fx:id="confirmAlert" layoutX="283.0" layoutY="178.0" prefHeight="151.0" prefWidth="335.0" style="-fx-background-color: #0C1640; -fx-border-color: #FFC107;" visible="false">
+      <AnchorPane fx:id="confirmAlert" layoutX="283.0" layoutY="178.0" prefHeight="151.0" prefWidth="335.0" style="-fx-background-color: #0C1640; -fx-border-color: #FFC107;">
          <effect>
             <DropShadow />
          </effect>
@@ -113,6 +129,14 @@
                <font>
                   <Font name="Franklin Gothic Demi" size="13.0" />
                </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="close1" layoutX="302.0" layoutY="-2.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: none;">
+               <graphic>
+                  <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" text="" />
+               </graphic>
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

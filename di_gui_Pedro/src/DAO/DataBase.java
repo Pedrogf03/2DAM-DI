@@ -19,7 +19,7 @@ public class DataBase {
   private static String passwd = "123456";
 
   // Conexión
-  private Connection conn;
+  private static Connection conn;
 
   public DataBase() {
     try {
