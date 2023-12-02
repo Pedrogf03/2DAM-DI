@@ -5,8 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import Model.Proyecto;
 
@@ -62,7 +62,7 @@ public class DataBase {
 
     try {
 
-      Set<Proyecto> proyectos = new HashSet<>();
+      Set<Proyecto> proyectos = new TreeSet<>();
       PreparedStatement ps = conn.prepareStatement("SELECT * FROM proyecto");
       ResultSet result = ps.executeQuery();
 

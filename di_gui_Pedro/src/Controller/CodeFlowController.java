@@ -4,6 +4,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Cursor;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
@@ -12,6 +14,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
@@ -20,6 +23,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
+import javafx.event.EventHandler;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
@@ -74,14 +78,24 @@ public class CodeFlowController implements Initializable {
 
   @FXML
   void closeWindow(ActionEvent event) {
-    if (!nombre.getText().equals("") || !descripcion.getText().equals("") || fecha_inicio.getValue() != null || fecha_final.getValue() != null) {
-      confirmMsg.setText("Va a perder todos los datos introducidos");
-      confirmAlert.setVisible(true);
-      confirmAlert.setDisable(false);
+
+    Button b = (Button) event.getTarget();
+
+    Parent p = b.getParent();
+    if (p.getId().equals("newProjectTab")) {
+      if (!nombre.getText().equals("") || !descripcion.getText().equals("") || fecha_inicio.getValue() != null || fecha_final.getValue() != null) {
+        confirmMsg.setText("Va a perder todos los datos introducidos");
+        confirmAlert.setVisible(true);
+        confirmAlert.setDisable(false);
+      } else {
+        p.setVisible(false);
+        p.setDisable(true);
+      }
     } else {
-      newProjectTab.setVisible(false);
-      newProjectTab.setDisable(true);
+      p.setVisible(false);
+      p.setDisable(true);
     }
+
   }
 
   @FXML
@@ -94,6 +108,11 @@ public class CodeFlowController implements Initializable {
   void confirmProject(ActionEvent event) {
     confirmAlert.setVisible(false);
     confirmAlert.setDisable(true);
+
+    newProjectTab.setVisible(false);
+    newProjectTab.setDisable(true);
+
+    resetForm();
   }
 
   @FXML
@@ -181,6 +200,17 @@ public class CodeFlowController implements Initializable {
           VBox vbox = new VBox();
           vbox.setPadding(new Insets(10, 10, 10, 10));
           vbox.getChildren().addAll(imageView, label);
+
+          EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+              // Escribir el código que quieres que se ejecute cuando se haga clic en el vbox
+              // TODO
+            }
+          };
+
+          vbox.setOnMouseClicked(eventHandler);
+          vbox.setCursor(Cursor.HAND);
 
           // Añadir el VBox al FlowPane
           flowPane.getChildren().add(vbox);

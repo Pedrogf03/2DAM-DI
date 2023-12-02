@@ -7,11 +7,10 @@ import DAO.DataBase;
 public class Proyecto implements Comparable<Proyecto> {
 
   private static DataBase db = new DataBase();
-
   private int idProyecto;
   private String nombre;
   private String descripcion;
-  private String imagen = "defaultProjectImg.png";
+  private String imagen = "default.png";
   private Date fecha_inicio;
   private Date fecha_final;
 
@@ -96,16 +95,19 @@ public class Proyecto implements Comparable<Proyecto> {
   }
 
   @Override
-  public int compareTo(Proyecto o) {
-
-    if (this.idProyecto > o.getIdProyecto()) {
-      return 1;
-    } else if (this.idProyecto < o.getIdProyecto()) {
+  public int compareTo(Proyecto p) {
+    // Si la fecha de inicio de este proyecto es anterior a la del otro, devuelve un número negativo
+    if (this.fecha_final.before(p.fecha_final)) {
       return -1;
-    } else {
+    }
+    // Si la fecha de inicio de este proyecto es posterior a la del otro, devuelve un número positivo
+    else if (this.fecha_final.after(p.fecha_final)) {
+      return 1;
+    }
+    // Si la fecha de inicio de este proyecto es igual a la del otro, devuelve cero
+    else {
       return 0;
     }
-
   }
 
 }
