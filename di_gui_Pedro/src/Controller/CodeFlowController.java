@@ -170,6 +170,7 @@ public class CodeFlowController implements Initializable {
     fileChooser.setText("📁");
     fecha_inicio.setValue(null);
     fecha_final.setValue(null);
+    errorMsg.setText(null);
   }
 
   public void mostrarProyectos() {
