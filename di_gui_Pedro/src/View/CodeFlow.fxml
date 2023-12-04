@@ -38,7 +38,7 @@
             </Button>
          </children>
       </VBox>
-      <Text fill="#ffc107" layoutX="120.0" layoutY="74.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tus proyectos">
+      <Text fill="#ffc107" layoutX="111.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tus proyectos">
          <font>
             <Font name="Franklin Gothic Demi" size="48.0" />
          </font>
@@ -141,6 +141,50 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="proyectoTab" disable="true" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox maxWidth="100.0" minWidth="100.0" prefHeight="500.0" prefWidth="100.0" style="-fx-background-color: #FFC107;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../bin/img/appIcon.png" />
+                     </image>
+                  </ImageView>
+                  <Button fx:id="backButton" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#goBackToProjects" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="ARROW_LEFT" wrappingWidth="49.14285659790039" />
+                     </graphic>
+                  </Button>
+               </children>
+            </VBox>
+            <Text fx:id="projectName" fill="#ffc107" layoutX="110.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Proyecto">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="48.0" />
+               </font>
+            </Text>
+            <Text fx:id="projectDesc" fill="#f1f1f1" layoutX="108.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium." wrappingWidth="373.73400878906256">
+               <font>
+                  <Font name="Consolas" size="12.0" />
+               </font>
+            </Text>
+            <Text fx:id="projectStartDate" fill="#ffc107" layoutX="692.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inicio: 04/12/2023" textAlignment="RIGHT" wrappingWidth="192.322265625">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="18.0" />
+               </font>
+            </Text>
+            <Text fx:id="projectEndDate" fill="#ffc107" layoutX="692.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Final: 04/12/2023" textAlignment="RIGHT" wrappingWidth="192.322265625">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="18.0" />
+               </font>
+            </Text>
          </children>
       </AnchorPane>
    </children>

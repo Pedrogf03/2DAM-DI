@@ -8,7 +8,9 @@ import java.sql.SQLException;
 import java.util.Set;
 import java.util.TreeSet;
 
+import Model.Prioridad;
 import Model.Proyecto;
+import Model.Tarea;
 
 public class DataBase {
 
@@ -72,6 +74,39 @@ public class DataBase {
       }
 
       return proyectos;
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return null;
+    }
+
+  }
+
+  public Set<Tarea> getTareas(int idProyecto) {
+
+    try {
+
+      Set<Tarea> tareas = new TreeSet<>();
+      PreparedStatement ps = conn.prepareStatement("SELECT * FROM tarea WHERE idProyecto = ?");
+      ps.setInt(1, idProyecto);
+      ResultSet result = ps.executeQuery();
+
+      while (result.next()) {
+
+        Prioridad p = Prioridad.MEDIA;
+        if (result.getString(7).equals("ALTA")) {
+          p = Prioridad.ALTA;
+        } else if (result.getString(7).equals("MEDIA")) {
+          p = Prioridad.MEDIA;
+        } else if (result.getString(7).equals("BAJA")) {
+          p = Prioridad.BAJA;
+        }
+
+        Tarea t = new Tarea(result.getInt(1), result.getString(3), result.getString(4), result.getDate(5), result.getDate(6), p);
+        tareas.add(t);
+      }
+
+      return tareas;
 
     } catch (SQLException e) {
       e.printStackTrace();

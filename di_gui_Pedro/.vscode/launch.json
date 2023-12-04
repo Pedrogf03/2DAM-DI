@@ -6,6 +6,13 @@
   "configurations": [
     {
       "type": "java",
+      "name": "DataBase",
+      "request": "launch",
+      "mainClass": "DAO.DataBase",
+      "projectName": "di_gui_Pedro_a32cad74"
+    },
+    {
+      "type": "java",
       "name": "Current File",
       "request": "launch",
       "mainClass": "${file}"

@@ -44,6 +44,7 @@ public class CodeFlowController implements Initializable {
 
   // ---- JavaFX
 
+  // ---- Alertas de confirmación
   @FXML
   private AnchorPane confirmAlert;
   @FXML
@@ -51,6 +52,7 @@ public class CodeFlowController implements Initializable {
   @FXML
   private Text confirmMsg;
 
+  // ---- Panel de creación de proyecto
   @FXML
   private Button createProjectButton;
   @FXML
@@ -67,15 +69,34 @@ public class CodeFlowController implements Initializable {
   private Text errorMsg;
   @FXML
   private Button close;
-
   @FXML
   private Button newProjectButton;
   @FXML
   private AnchorPane newProjectTab;
 
+  // ---- Panel con todos los proyectos
   @FXML
   private FlowPane flowPane;
 
+  // Pantalla de ver proyecto
+
+  // ---- Botón de volver
+  @FXML
+  private Button backButton;
+
+  // ---- Panel con la información del proyecto
+  @FXML
+  private AnchorPane proyectoTab;
+  @FXML
+  private Text projectName;
+  @FXML
+  private Text projectDesc;
+  @FXML
+  private Text projectStartDate;
+  @FXML
+  private Text projectEndDate;
+
+  // ---- Función generica de cerrar ventana.
   @FXML
   void closeWindow(ActionEvent event) {
 
@@ -98,12 +119,14 @@ public class CodeFlowController implements Initializable {
 
   }
 
+  // ---- Función para mostrar la ventana de creación de proyecto
   @FXML
   void showNewProjectTab(ActionEvent event) {
     newProjectTab.setVisible(true);
     newProjectTab.setDisable(false);
   }
 
+  // ---- Mensaje de confirmación 
   @FXML
   void confirmProject(ActionEvent event) {
     confirmAlert.setVisible(false);
@@ -115,11 +138,13 @@ public class CodeFlowController implements Initializable {
     resetForm();
   }
 
+  // ---- Selector de la imagen del proyecto
   @FXML
   void fileSelector(ActionEvent event) {
     file.seleccionarImagen(fileChooser, event);
   }
 
+  // ---- Comprobar y crear un nuevo proyecto en la base de datos
   @FXML
   void createProject(ActionEvent event) {
 
@@ -164,6 +189,7 @@ public class CodeFlowController implements Initializable {
 
   }
 
+  // ---- Reiniciar el formulario
   public void resetForm() {
     nombre.setText(null);
     descripcion.setText(null);
@@ -173,6 +199,7 @@ public class CodeFlowController implements Initializable {
     errorMsg.setText(null);
   }
 
+  // ---- Mostrar todos los proyectos de la base de datos
   public void mostrarProyectos() {
     DataBase db = new DataBase();
     proyectos = db.getProyectos();
@@ -206,7 +233,7 @@ public class CodeFlowController implements Initializable {
             @Override
             public void handle(MouseEvent event) {
               // Escribir el código que quieres que se ejecute cuando se haga clic en el vbox
-              // TODO
+              showProject(p);
             }
           };
 
@@ -220,6 +247,28 @@ public class CodeFlowController implements Initializable {
         }
       }
     }
+  }
+
+  // ---- Cambiar de ventana a la que muestra la información del proyecto
+  void showProject(Proyecto p) {
+
+    proyectoTab.setDisable(false);
+    proyectoTab.setVisible(true);
+
+    projectName.setText(p.getNombre());
+    projectDesc.setText(p.getDescripcion());
+    projectStartDate.setText("" + p.getFecha_inicio());
+    projectEndDate.setText("" + p.getFecha_final());
+
+  }
+
+  // ---- Volver a la ventana que muestra todos los proyectos
+  @FXML
+  void goBackToProjects(ActionEvent event) {
+
+    proyectoTab.setDisable(true);
+    proyectoTab.setVisible(false);
+
   }
 
   @Override

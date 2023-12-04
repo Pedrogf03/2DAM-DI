@@ -1,6 +1,7 @@
 package Model;
 
 import java.sql.Date;
+import java.util.Set;
 
 import DAO.DataBase;
 
@@ -13,6 +14,7 @@ public class Proyecto implements Comparable<Proyecto> {
   private String imagen = "default.png";
   private Date fecha_inicio;
   private Date fecha_final;
+  private Set<Tarea> tareas;
 
   // ---- Constructor por defecto.
   public Proyecto() {
@@ -39,7 +41,11 @@ public class Proyecto implements Comparable<Proyecto> {
     this.fecha_final = fecha_final;
   }
 
-  // ---- Getterss
+  public Proyecto(int idProyecto) {
+    this.idProyecto = idProyecto;
+  }
+
+  // ---- Getters
   public int getIdProyecto() {
     return idProyecto;
   }
@@ -64,11 +70,11 @@ public class Proyecto implements Comparable<Proyecto> {
     return fecha_final;
   }
 
-  // ---- Setters
-  public void setIdProyecto(int idProyecto) {
-    this.idProyecto = idProyecto;
+  public Set<Tarea> getTareas() {
+    return tareas;
   }
 
+  // ---- Setters
   public void setNombre(String nombre) {
     this.nombre = nombre;
   }
@@ -94,19 +100,23 @@ public class Proyecto implements Comparable<Proyecto> {
     return db.insertarProyecto(this);
   }
 
+  public void getTareasDB() {
+    this.tareas = db.getTareas(idProyecto);
+  }
+
   @Override
   public int compareTo(Proyecto p) {
-    // Si la fecha de inicio de este proyecto es anterior a la del otro, devuelve un número negativo
     if (this.fecha_final.before(p.fecha_final)) {
       return -1;
-    }
-    // Si la fecha de inicio de este proyecto es posterior a la del otro, devuelve un número positivo
-    else if (this.fecha_final.after(p.fecha_final)) {
+    } else if (this.fecha_final.after(p.fecha_final)) {
       return 1;
-    }
-    // Si la fecha de inicio de este proyecto es igual a la del otro, devuelve cero
-    else {
-      return 0;
+    } else {
+      int resultado = this.getNombre().compareTo(p.getNombre());
+      if (resultado == 0) {
+        return Integer.compare(this.idProyecto, p.idProyecto);
+      } else {
+        return resultado;
+      }
     }
   }
 
