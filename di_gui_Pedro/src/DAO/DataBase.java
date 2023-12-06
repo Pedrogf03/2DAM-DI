@@ -60,6 +60,35 @@ public class DataBase {
 
   }
 
+  // Insertar tarea
+  public boolean insertarTarea(Tarea t) {
+
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("INSERT INTO tarea (idProyecto, nombre, descripcion, fecha_inicio, fecha_fin, prioridad) VALUES (?,?,?,?,?,?)");
+
+      ps.setInt(1, t.getProyecto().getIdProyecto());
+      ps.setString(2, t.getNombre());
+      ps.setString(3, t.getDescripcion());
+      ps.setDate(4, t.getFecha_inicio());
+      ps.setDate(5, t.getFecha_fin());
+      ps.setString(6, t.getPrioridad());
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+
   public Set<Proyecto> getProyectos() {
 
     try {
@@ -82,27 +111,27 @@ public class DataBase {
 
   }
 
-  public Set<Tarea> getTareas(int idProyecto) {
+  public Set<Tarea> getTareas(Proyecto p) {
 
     try {
 
       Set<Tarea> tareas = new TreeSet<>();
       PreparedStatement ps = conn.prepareStatement("SELECT * FROM tarea WHERE idProyecto = ?");
-      ps.setInt(1, idProyecto);
+      ps.setInt(1, p.getIdProyecto());
       ResultSet result = ps.executeQuery();
 
       while (result.next()) {
 
-        Prioridad p = Prioridad.MEDIA;
+        Prioridad pr = Prioridad.MEDIA;
         if (result.getString(7).equals("ALTA")) {
-          p = Prioridad.ALTA;
+          pr = Prioridad.ALTA;
         } else if (result.getString(7).equals("MEDIA")) {
-          p = Prioridad.MEDIA;
+          pr = Prioridad.MEDIA;
         } else if (result.getString(7).equals("BAJA")) {
-          p = Prioridad.BAJA;
+          pr = Prioridad.BAJA;
         }
 
-        Tarea t = new Tarea(result.getInt(1), result.getString(3), result.getString(4), result.getDate(5), result.getDate(6), p);
+        Tarea t = new Tarea(result.getInt(1), p, result.getString(3), result.getString(4), result.getDate(5), result.getDate(6), pr);
         tareas.add(t);
       }
 
@@ -113,6 +142,26 @@ public class DataBase {
       return null;
     }
 
+  }
+
+  public boolean borrarProyecto(Proyecto p) {
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("DELETE FROM proyecto WHERE idProyecto = ?");
+      ps.setInt(1, p.getIdProyecto());
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
   }
 
 }

@@ -7,7 +7,7 @@ import DAO.DataBase;
 
 public class Proyecto implements Comparable<Proyecto> {
 
-  private static DataBase db = new DataBase();
+  private DataBase db = new DataBase();
   private int idProyecto;
   private String nombre;
   private String descripcion;
@@ -41,10 +41,6 @@ public class Proyecto implements Comparable<Proyecto> {
     this.fecha_final = fecha_final;
   }
 
-  public Proyecto(int idProyecto) {
-    this.idProyecto = idProyecto;
-  }
-
   // ---- Getters
   public int getIdProyecto() {
     return idProyecto;
@@ -71,6 +67,7 @@ public class Proyecto implements Comparable<Proyecto> {
   }
 
   public Set<Tarea> getTareas() {
+    this.tareas = db.getTareas(this);
     return tareas;
   }
 
@@ -100,8 +97,8 @@ public class Proyecto implements Comparable<Proyecto> {
     return db.insertarProyecto(this);
   }
 
-  public void getTareasDB() {
-    this.tareas = db.getTareas(idProyecto);
+  public boolean eliminar() {
+    return db.borrarProyecto(this);
   }
 
   @Override

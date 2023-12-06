@@ -2,9 +2,13 @@ package Model;
 
 import java.sql.Date;
 
+import DAO.DataBase;
+
 public class Tarea implements Comparable<Tarea> {
 
+  private DataBase db = new DataBase();
   private int idTarea;
+  private Proyecto p;
   private String nombre;
   private String descripcion;
   private Date fecha_inicio;
@@ -16,8 +20,9 @@ public class Tarea implements Comparable<Tarea> {
   }
 
   // ---- Constructor con todos los datos.
-  public Tarea(int idTarea, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, Prioridad prioridad) {
+  public Tarea(int idTarea, Proyecto p, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, Prioridad prioridad) {
     this.idTarea = idTarea;
+    this.p = p;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.fecha_inicio = fecha_inicio;
@@ -25,8 +30,9 @@ public class Tarea implements Comparable<Tarea> {
     this.prioridad = prioridad;
   }
 
-  // ---- Constructor sin id (insertar nuevo proyecto en base de datos).
-  public Tarea(String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, Prioridad prioridad) {
+  // ---- Constructor sin id (insertar nueva tarea en base de datos).
+  public Tarea(Proyecto p, String nombre, String descripcion, Date fecha_inicio, Date fecha_fin, Prioridad prioridad) {
+    this.p = p;
     this.nombre = nombre;
     this.descripcion = descripcion;
     this.fecha_inicio = fecha_inicio;
@@ -37,6 +43,10 @@ public class Tarea implements Comparable<Tarea> {
   // ---- Getters
   public int getIdTarea() {
     return idTarea;
+  }
+
+  public Proyecto getProyecto() {
+    return p;
   }
 
   public String getNombre() {
@@ -55,8 +65,8 @@ public class Tarea implements Comparable<Tarea> {
     return fecha_fin;
   }
 
-  public Prioridad getPrioridad() {
-    return prioridad;
+  public String getPrioridad() {
+    return prioridad.toString();
   }
 
   // ---- Setters
@@ -78,6 +88,10 @@ public class Tarea implements Comparable<Tarea> {
 
   public void setPrioridad(Prioridad prioridad) {
     this.prioridad = prioridad;
+  }
+
+  public boolean crearTarea() {
+    return db.insertarTarea(this);
   }
 
   @Override

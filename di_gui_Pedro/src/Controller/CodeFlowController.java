@@ -7,46 +7,48 @@ import javafx.geometry.Insets;
 import javafx.scene.Cursor;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
 
 import javafx.event.EventHandler;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ResourceBundle;
 import java.util.Set;
 
 import DAO.DataBase;
 import DAO.FileFun;
+import Model.Prioridad;
 import Model.Proyecto;
 import Model.Tarea;
 
 public class CodeFlowController implements Initializable {
 
-  private Set<Proyecto> proyectos;
-
   // ---- FileFun
 
   private FileFun file = new FileFun();
+
+  // ---- PROYECTOS
+
+  private Set<Proyecto> proyectos;
 
   // ---- Botón que muestra el panel de creación de un nuevo proyecto.
   @FXML
@@ -125,8 +127,48 @@ public class CodeFlowController implements Initializable {
       }
     });
 
+    // Resgringir fechas pasadas en las fechas de inicio y fin
+    fecha_inicioNuevaTarea.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+      @Override
+      public DateCell call(DatePicker param) {
+        return new DateCell() {
+          @Override
+          public void updateItem(LocalDate item, boolean empty) {
+            super.updateItem(item, empty);
+
+            // Deshabilita las fechas anteriores al día actual
+            setDisable(empty || item.compareTo(LocalDate.now()) < 0);
+          }
+        };
+      }
+    });
+
+    fecha_finalNuevaTarea.setDayCellFactory(new Callback<DatePicker, DateCell>() {
+      @Override
+      public DateCell call(DatePicker param) {
+        return new DateCell() {
+          @Override
+          public void updateItem(LocalDate item, boolean empty) {
+            super.updateItem(item, empty);
+
+            // Deshabilita las fechas anteriores al día actual mas uno
+            setDisable(empty || item.compareTo(LocalDate.now()) < 0);
+          }
+        };
+      }
+    });
+
     scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+    scrollPane.setFitToHeight(true);
+    scrollPane.setFitToWidth(true);
+
+    scrollTareasEnProceso.setFitToHeight(true);
+    scrollTareasPendientes.setFitToHeight(true);
+    scrollTareasFinalizadas.setFitToHeight(true);
+
+    prioridad.getItems().addAll(Prioridad.values());
+    prioridad.setValue(Prioridad.MEDIA);
 
     mostrarProyectos();
 
@@ -155,6 +197,27 @@ public class CodeFlowController implements Initializable {
         p.setVisible(false);
         p.setDisable(true);
       }
+    } else if (p.getId().equals("newTaskTab")) {
+      if (!nombreNuevaTarea.getText().equals("") || !descripcionNuevaTarea.getText().equals("") || fecha_inicioNuevaTarea.getValue() != null || fecha_finalNuevaTarea.getValue() != null || !prioridad.getValue().toString().equals("MEDIA")) {
+        alertTaskText.setText("Va a perder todos los datos introducidos");
+        alertTask.setVisible(true);
+        alertTask.setDisable(false);
+
+        alertTaskButton.setOnAction(e -> {
+          alertTask.setVisible(false);
+          alertTask.setDisable(true);
+
+          resetForm(1);
+
+          newTaskTab.setVisible(false);
+          newTaskTab.setDisable(true);
+
+        });
+
+      } else {
+        p.setVisible(false);
+        p.setDisable(true);
+      }
     } else {
       p.setVisible(false);
       p.setDisable(true);
@@ -172,17 +235,27 @@ public class CodeFlowController implements Initializable {
     newProjectTab.setVisible(false);
     newProjectTab.setDisable(true);
 
-    resetForm();
+    resetForm(0);
+
   }
 
   // ---- Reiniciar el formulario.
-  public void resetForm() {
-    nombre.setText("");
-    descripcion.setText("");
-    fileChooser.setText("📁");
-    fecha_inicio.setValue(null);
-    fecha_final.setValue(null);
-    errorMsg.setText("");
+  public void resetForm(int option) {
+    if (option == 0) {
+      nombre.setText("");
+      descripcion.setText("");
+      fileChooser.setText("📁");
+      fecha_inicio.setValue(null);
+      fecha_final.setValue(null);
+      errorMsg.setText("");
+    } else if (option == 1) {
+      nombreNuevaTarea.setText("");
+      descripcionNuevaTarea.setText("");
+      fecha_inicioNuevaTarea.setValue(null);
+      fecha_finalNuevaTarea.setValue(null);
+      errorMsgNuevaTarea.setText("");
+      prioridad.setValue(Prioridad.MEDIA);
+    }
   }
 
   // ---- Seleccionar la imagen del proyecto.
@@ -230,7 +303,7 @@ public class CodeFlowController implements Initializable {
         confirmAlert.setDisable(false);
       }
 
-      resetForm();
+      resetForm(0);
 
     }
 
@@ -251,8 +324,10 @@ public class CodeFlowController implements Initializable {
           ImageView imageView = new ImageView(image);
 
           // Establecer el ancho y alto fijos
-          imageView.setFitWidth(216.78);
-          imageView.setFitHeight(122.5);
+          // imageView.setFitWidth(216.78);
+          // imageView.setFitHeight(122.5);
+          imageView.setFitWidth(236);
+          imageView.setFitHeight(133);
 
           // Crear un label con el nombre del proyecto
           Label label = new Label(p.getNombre());
@@ -270,7 +345,7 @@ public class CodeFlowController implements Initializable {
           EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-              //showProject(p);
+              mostrarTareas(p);
             }
           };
 
@@ -285,6 +360,243 @@ public class CodeFlowController implements Initializable {
         }
       }
     }
+  }
+
+  // -------------------------------------------------------------------------------------------- //
+
+  // ---- TAREAS
+
+  // ---- Panel donde se van a mostrar las tareas
+  @FXML
+  private AnchorPane tareas;
+
+  // ---- Proyecto con el que se está trabajando
+  private Proyecto proyecto;
+
+  // ---- Botones del panel lateral
+  @FXML
+  private Button volverToProyectos;
+  @FXML
+  private Button borrarProyecto;
+
+  // ---- Alerta de borrar el proyecto
+  @FXML
+  private AnchorPane alertTask;
+  @FXML
+  private Button alertTaskButton;
+  @FXML
+  private Text alertTaskText;
+
+  // ---- Paneles con las tareas
+  @FXML
+  private ScrollPane scrollTareasPendientes;
+  @FXML
+  private VBox tareasPendientes;
+
+  @FXML
+  private Button newTaskButton;
+
+  @FXML
+  private ScrollPane scrollTareasEnProceso;
+  @FXML
+  private VBox tareasEnProceso;
+  @FXML
+  private ScrollPane scrollTareasFinalizadas;
+  @FXML
+  private VBox tareasFinalizadas;
+
+  // ---- Información relativa al proyecto
+  @FXML
+  private Text nombreProyecto;
+  @FXML
+  private Text fechasProyecto;
+  @FXML
+  private Text descripcionProyecto;
+
+  // ---- Panel de creacion de nueva tarea
+  @FXML
+  private AnchorPane newTaskTab;
+  @FXML
+  private TextField nombreNuevaTarea;
+  @FXML
+  private TextArea descripcionNuevaTarea;
+  @FXML
+  private DatePicker fecha_inicioNuevaTarea;
+  @FXML
+  private DatePicker fecha_finalNuevaTarea;
+  @FXML
+  private ChoiceBox<Prioridad> prioridad;
+  @FXML
+  private Text errorMsgNuevaTarea;
+  @FXML
+  private Button createTaskButton;
+  @FXML
+  private Button closeTaskTab;
+
+  void mostrarTareas(Proyecto p) {
+    tareas.setVisible(true);
+    tareas.setDisable(false);
+
+    proyecto = p;
+
+    tareasPendientes.getChildren().clear();
+    tareasEnProceso.getChildren().clear();
+    tareasFinalizadas.getChildren().clear();
+
+    nombreProyecto.setText(p.getNombre());
+    fechasProyecto.setText(p.getFecha_inicio() + " - " + p.getFecha_final());
+    descripcionProyecto.setText(p.getDescripcion());
+
+    for (Tarea t : p.getTareas()) {
+
+      Text nombreTarea = new Text(t.getNombre());
+      Text fechasTarea = new Text(t.getFecha_inicio() + " - " + t.getFecha_fin());
+
+      long days = ChronoUnit.DAYS.between(t.getFecha_inicio().toLocalDate(), t.getFecha_fin().toLocalDate());
+
+      Text duracion = new Text("" + days);
+
+      nombreTarea.setFont(new Font("Consolas", 14));
+      fechasTarea.setFont(new Font("Consolas", 14));
+      duracion.setFont(new Font("Consolas", 12));
+      nombreTarea.setFill(Color.WHITE);
+      fechasTarea.setFill(Color.WHITE);
+      duracion.setFill(Color.WHITE);
+      fechasTarea.setWrappingWidth(200);
+      fechasTarea.setTextAlignment(TextAlignment.CENTER);
+      duracion.setWrappingWidth(200);
+      duracion.setTextAlignment(TextAlignment.CENTER);
+
+      VBox tarea = new VBox(5);
+
+      tarea.getChildren().addAll(nombreTarea, fechasTarea, duracion);
+
+      VBox.setMargin(tarea, new Insets(5, 10, 5, 10));
+      tarea.setPadding(new Insets(10, 10, 10, 10));
+
+      if (t.getFecha_inicio().after(Date.valueOf(LocalDate.now()))) { // La fecha de inicio es despues de hoy
+
+        tarea.setStyle("-fx-background-color: #D15F5F;");
+        tareasPendientes.getChildren().addAll(tarea);
+
+      } else if ((t.getFecha_inicio().before(Date.valueOf(LocalDate.now())) || t.getFecha_inicio().equals(Date.valueOf(LocalDate.now()))) && (t.getFecha_fin().after(Date.valueOf(LocalDate.now())) || t.getFecha_fin().equals(Date.valueOf(LocalDate.now())))) {
+
+        tarea.setStyle("-fx-background-color: #FFC107;");
+        tareasEnProceso.getChildren().addAll(tarea);
+
+      } else if (t.getFecha_fin().before(Date.valueOf(LocalDate.now()))) {
+
+        tarea.setStyle("-fx-background-color: #81C784;");
+        tareasFinalizadas.getChildren().addAll(tarea);
+
+      }
+
+    }
+
+  }
+
+  @FXML
+  void confirmBorrarProyecto() {
+
+    alertTaskText.setText("¿Seguro que quiere eliminar este proyecto?");
+
+    alertTask.setVisible(true);
+    alertTask.setDisable(false);
+
+    alertTaskButton.setOnAction(e -> {
+      borrarProyecto(proyecto);
+      alertTask.setVisible(false);
+      alertTask.setDisable(true);
+    });
+
+  }
+
+  public void borrarProyecto(Proyecto p) {
+    if (p.eliminar()) {
+      goBackToProjects(null);
+    } else {
+      System.out.println("No se ha podido eliminar el proyecto.");
+    }
+  }
+
+  @FXML
+  void goBackToProjects(ActionEvent event) {
+    mostrarProyectos();
+
+    tareas.setVisible(false);
+    tareas.setDisable(true);
+  }
+
+  @FXML
+  void showNewTaskTab(ActionEvent event) {
+    newTaskTab.setVisible(true);
+    newTaskTab.setDisable(false);
+  }
+
+  @FXML
+  void createTask(ActionEvent event) {
+
+    // Comprobación de que no haya campos obligatorios en blanco.
+    if (nombreNuevaTarea.getText().equals("")) {
+      errorMsgNuevaTarea.setText("Introduzca el nombre de la tarea");
+      errorMsgNuevaTarea.setVisible(true);
+    } else if (descripcionNuevaTarea.getText().equals("")) {
+      errorMsgNuevaTarea.setText("Introduzca la descripción de la tarea");
+      errorMsgNuevaTarea.setVisible(true);
+    } else if (fecha_inicioNuevaTarea.getValue() == null) {
+      errorMsgNuevaTarea.setText("Introduzca la fecha de inicio del proyecto.");
+      errorMsgNuevaTarea.setVisible(true);
+    } else if (fecha_finalNuevaTarea.getValue() == null) {
+      errorMsgNuevaTarea.setText("Introduzca la fecha de final del proyecto.");
+      errorMsgNuevaTarea.setVisible(true);
+    } else if (fecha_finalNuevaTarea.getValue().compareTo(fecha_inicioNuevaTarea.getValue()) < 0) {
+      errorMsgNuevaTarea.setText("La fecha de final no puede ser anterior a la fecha de inicio.");
+      errorMsgNuevaTarea.setVisible(true);
+    } else {
+
+      Prioridad pr = Prioridad.MEDIA;
+      if (prioridad.getValue().toString().equals("ALTA")) {
+        pr = Prioridad.ALTA;
+      } else if (prioridad.getValue().toString().equals("MEDIA")) {
+        pr = Prioridad.MEDIA;
+      } else if (prioridad.getValue().toString().equals("BAJA")) {
+        pr = Prioridad.BAJA;
+      }
+
+      // Creación e inserción en base de datos de la tarea.
+      Tarea t = new Tarea(proyecto, nombreNuevaTarea.getText(), descripcionNuevaTarea.getText(), Date.valueOf(fecha_inicioNuevaTarea.getValue()), Date.valueOf(fecha_finalNuevaTarea.getValue()), pr);
+      if (t.crearTarea()) {
+        newTaskTab.setVisible(false);
+        newTaskTab.setDisable(true);
+
+        // Mensaje de confirmación.
+        confirmMsg.setText("Tarea creada correctamente");
+        confirmAlert.setVisible(true);
+        confirmAlert.setDisable(false);
+        mostrarTareas(proyecto);
+      } else {
+        // Mensaje de confirmación.
+        confirmMsg.setText("Ha ocurrido un error inesperado");
+        confirmAlert.setVisible(true);
+        confirmAlert.setDisable(false);
+      }
+
+      resetForm(1);
+
+    }
+
+  }
+
+  void confirmCloseTask(ActionEvent event) {
+
+    alertTaskText.setText("Va a perder los datos introducidos");
+
+    alertTask.setVisible(false);
+    alertTask.setDisable(true);
+
+    newTaskTab.setVisible(false);
+    newTaskTab.setDisable(true);
+
   }
 
 }
