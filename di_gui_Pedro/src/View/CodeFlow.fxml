@@ -5,6 +5,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.DropShadow?>
@@ -43,7 +44,11 @@
             <Font name="Franklin Gothic Demi" size="48.0" />
          </font>
       </Text>
-      <FlowPane fx:id="flowPane" layoutX="120.0" layoutY="93.0" prefHeight="395.0" prefWidth="766.0" AnchorPane.bottomAnchor="11.800000000000011" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="13.600000000000023" AnchorPane.topAnchor="92.80000000000001" />
+      <ScrollPane fx:id="scrollPane" layoutX="111.0" layoutY="78.0" prefHeight="410.0" prefWidth="776.0" style="-fx-background-color: #0C1640;" AnchorPane.bottomAnchor="11.200000000000045" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="12.799999999999955" AnchorPane.topAnchor="78.0">
+         <content>
+            <FlowPane fx:id="flowPane" minWidth="776.0" style="-fx-background-color: #0C1640;" />
+         </content>
+      </ScrollPane>
       <AnchorPane fx:id="newProjectTab" disable="true" layoutX="100.0" layoutY="50.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #0C1640;" visible="false">
          <effect>
             <DropShadow />
@@ -105,7 +110,7 @@
                   <Font name="Franklin Gothic Demi" size="12.0" />
                </font>
             </Text>
-            <Button fx:id="close" layoutX="665.0" layoutY="2.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: none;">
+            <Button fx:id="closeProjectTab" layoutX="665.0" layoutY="2.0" mnemonicParsing="false" onAction="#closePanel" style="-fx-background-color: none;">
                <graphic>
                   <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" />
                </graphic>
@@ -125,7 +130,7 @@
                   <Font name="Franklin Gothic Demi" size="24.0" />
                </font>
             </Text>
-            <Button fx:id="confirmButton" layoutX="103.0" layoutY="110.0" mnemonicParsing="false" onAction="#confirmProject" prefHeight="26.0" prefWidth="130.0" style="-fx-background-color: #FFC107;" text="Aceptar">
+            <Button fx:id="confirmButton" layoutX="103.0" layoutY="110.0" mnemonicParsing="false" onAction="#confirmCloseProject" prefHeight="26.0" prefWidth="130.0" style="-fx-background-color: #FFC107;" text="Aceptar">
                <font>
                   <Font name="Franklin Gothic Demi" size="13.0" />
                </font>
@@ -133,7 +138,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="close1" layoutX="302.0" layoutY="-2.0" mnemonicParsing="false" onAction="#closeWindow" style="-fx-background-color: none;">
+            <Button fx:id="closeAlert" layoutX="302.0" layoutY="-2.0" mnemonicParsing="false" onAction="#closePanel" style="-fx-background-color: none;">
                <graphic>
                   <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" text="" />
                </graphic>
@@ -141,50 +146,6 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="proyectoTab" disable="true" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-         <children>
-            <VBox maxWidth="100.0" minWidth="100.0" prefHeight="500.0" prefWidth="100.0" style="-fx-background-color: #FFC107;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
-               <children>
-                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../bin/img/appIcon.png" />
-                     </image>
-                  </ImageView>
-                  <Button fx:id="backButton" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#goBackToProjects" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
-                     <cursor>
-                        <Cursor fx:constant="HAND" />
-                     </cursor>
-                     <font>
-                        <Font name="System Bold" size="48.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="ARROW_LEFT" wrappingWidth="49.14285659790039" />
-                     </graphic>
-                  </Button>
-               </children>
-            </VBox>
-            <Text fx:id="projectName" fill="#ffc107" layoutX="110.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Proyecto">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="48.0" />
-               </font>
-            </Text>
-            <Text fx:id="projectDesc" fill="#f1f1f1" layoutX="108.0" layoutY="87.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium." wrappingWidth="373.73400878906256">
-               <font>
-                  <Font name="Consolas" size="12.0" />
-               </font>
-            </Text>
-            <Text fx:id="projectStartDate" fill="#ffc107" layoutX="692.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inicio: 04/12/2023" textAlignment="RIGHT" wrappingWidth="192.322265625">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="18.0" />
-               </font>
-            </Text>
-            <Text fx:id="projectEndDate" fill="#ffc107" layoutX="692.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Final: 04/12/2023" textAlignment="RIGHT" wrappingWidth="192.322265625">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="18.0" />
-               </font>
-            </Text>
          </children>
       </AnchorPane>
    </children>
