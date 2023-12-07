@@ -164,4 +164,82 @@ public class DataBase {
     }
   }
 
+  public boolean borrarTarea(Tarea t) {
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("DELETE FROM tarea WHERE idTarea = ?");
+      ps.setInt(1, t.getIdTarea());
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateProyecto(Proyecto p) {
+
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("UPDATE proyecto SET nombre = ?, descripcion = ?, imagen = ?, fecha_inicio = ?, fecha_final = ? WHERE idProyecto = ?");
+
+      ps.setString(1, p.getNombre());
+      ps.setString(2, p.getDescripcion());
+      ps.setString(3, p.getImagen());
+      ps.setDate(4, p.getFecha_inicio());
+      ps.setDate(5, p.getFecha_final());
+
+      ps.setInt(6, p.getIdProyecto());
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+
+  public boolean updateTarea(Tarea t) {
+
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("UPDATE tarea SET nombre = ?, descripcion = ?, fecha_inicio = ?, fecha_fin = ?, prioridad = ? WHERE idTarea = ?");
+
+      ps.setString(1, t.getNombre());
+      ps.setString(2, t.getDescripcion());
+      ps.setDate(3, t.getFecha_inicio());
+      ps.setDate(4, t.getFecha_fin());
+      ps.setString(5, t.getPrioridad());
+
+      ps.setInt(6, t.getIdTarea());
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+
 }

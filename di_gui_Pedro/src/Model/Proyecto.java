@@ -117,4 +117,8 @@ public class Proyecto implements Comparable<Proyecto> {
     }
   }
 
+  public boolean update() {
+    return db.updateProyecto(this);
+  }
+
 }

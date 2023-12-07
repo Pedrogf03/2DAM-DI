@@ -94,6 +94,10 @@ public class Tarea implements Comparable<Tarea> {
     return db.insertarTarea(this);
   }
 
+  public boolean eliminar() {
+    return db.borrarTarea(this);
+  }
+
   @Override
   public int compareTo(Tarea t) {
     int resultado = this.getPrioridad().compareTo(t.getPrioridad());
@@ -110,6 +114,10 @@ public class Tarea implements Comparable<Tarea> {
       }
     }
     return resultado;
+  }
+
+  public boolean update() {
+    return db.updateTarea(this);
   }
 
 }

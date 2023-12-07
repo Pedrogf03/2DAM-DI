@@ -188,8 +188,9 @@ public class CodeFlowController implements Initializable {
     Button b = (Button) event.getTarget();
 
     Parent p = b.getParent();
-    if (p.getId().equals("newProjectTab")) {
-      if (!nombre.getText().equals("") || !descripcion.getText().equals("") || fecha_inicio.getValue() != null || fecha_final.getValue() != null || fileChooser.getText() != "📁") {
+    if (p.equals(newProjectTab)) {
+
+      if (!nombre.getText().equals("") || !descripcion.getText().equals("") || fecha_inicio.getValue() != null || fecha_final.getValue() != null) {
         confirmMsg.setText("Va a perder todos los datos introducidos");
         confirmAlert.setVisible(true);
         confirmAlert.setDisable(false);
@@ -197,7 +198,9 @@ public class CodeFlowController implements Initializable {
         p.setVisible(false);
         p.setDisable(true);
       }
-    } else if (p.getId().equals("newTaskTab")) {
+
+    } else if (p.equals(newTaskTab)) {
+
       if (!nombreNuevaTarea.getText().equals("") || !descripcionNuevaTarea.getText().equals("") || fecha_inicioNuevaTarea.getValue() != null || fecha_finalNuevaTarea.getValue() != null || !prioridad.getValue().toString().equals("MEDIA")) {
         alertTaskText.setText("Va a perder todos los datos introducidos");
         alertTask.setVisible(true);
@@ -378,6 +381,8 @@ public class CodeFlowController implements Initializable {
   private Button volverToProyectos;
   @FXML
   private Button borrarProyecto;
+  @FXML
+  private Button editarProyecto;
 
   // ---- Alerta de borrar el proyecto
   @FXML
@@ -433,6 +438,27 @@ public class CodeFlowController implements Initializable {
   @FXML
   private Button closeTaskTab;
 
+  // ---- Panel de ver info de la tarea
+  @FXML
+  private AnchorPane viewTaskInfo;
+  @FXML
+  private Text viewNombreTask;
+  @FXML
+  private Text viewFechasTask;
+  @FXML
+  private Text viewDuracionTask;
+  @FXML
+  private Text viewDescTask;
+  @FXML
+  private Button updateTareaButton;
+  @FXML
+  private Button closeViewTaskTab;
+  @FXML
+  private Button deleteTarea;
+  // Tarea de la que se está viendo la información.
+  private Tarea tareaActual;
+
+  // ---- Función que muestra todas las tareas de un proyecto
   void mostrarTareas(Proyecto p) {
     tareas.setVisible(true);
     tareas.setDisable(false);
@@ -491,10 +517,32 @@ public class CodeFlowController implements Initializable {
 
       }
 
+      // Añadir un evento al hacer click en la tarea.
+      EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
+        @Override
+        public void handle(MouseEvent event) {
+
+          viewNombreTask.setText(nombreTarea.getText());
+          viewFechasTask.setText(fechasTarea.getText());
+          viewDuracionTask.setText(duracion.getText());
+          viewDescTask.setText(t.getDescripcion());
+
+          tareaActual = t;
+
+          viewTaskInfo.setVisible(true);
+          viewTaskInfo.setDisable(false);
+
+        }
+      };
+
+      tarea.setOnMouseClicked(eventHandler);
+      tarea.setCursor(Cursor.HAND);
+
     }
 
   }
 
+  // ---- Mostrar alerta de confirmación de borrado del proyecto.
   @FXML
   void confirmBorrarProyecto() {
 
@@ -511,6 +559,7 @@ public class CodeFlowController implements Initializable {
 
   }
 
+  // ---- Borrado de un proyecto.
   public void borrarProyecto(Proyecto p) {
     if (p.eliminar()) {
       goBackToProjects(null);
@@ -519,20 +568,24 @@ public class CodeFlowController implements Initializable {
     }
   }
 
+  // ---- Volver a la ventana de proyectos;
   @FXML
   void goBackToProjects(ActionEvent event) {
+    proyecto = null;
     mostrarProyectos();
 
     tareas.setVisible(false);
     tareas.setDisable(true);
   }
 
+  // ---- Mostrar la ventana de creación de un nuevo proyecto.
   @FXML
   void showNewTaskTab(ActionEvent event) {
     newTaskTab.setVisible(true);
     newTaskTab.setDisable(false);
   }
 
+  // ---- Crear una nueva tarea.
   @FXML
   void createTask(ActionEvent event) {
 
@@ -554,17 +607,8 @@ public class CodeFlowController implements Initializable {
       errorMsgNuevaTarea.setVisible(true);
     } else {
 
-      Prioridad pr = Prioridad.MEDIA;
-      if (prioridad.getValue().toString().equals("ALTA")) {
-        pr = Prioridad.ALTA;
-      } else if (prioridad.getValue().toString().equals("MEDIA")) {
-        pr = Prioridad.MEDIA;
-      } else if (prioridad.getValue().toString().equals("BAJA")) {
-        pr = Prioridad.BAJA;
-      }
-
       // Creación e inserción en base de datos de la tarea.
-      Tarea t = new Tarea(proyecto, nombreNuevaTarea.getText(), descripcionNuevaTarea.getText(), Date.valueOf(fecha_inicioNuevaTarea.getValue()), Date.valueOf(fecha_finalNuevaTarea.getValue()), pr);
+      Tarea t = new Tarea(proyecto, nombreNuevaTarea.getText(), descripcionNuevaTarea.getText(), Date.valueOf(fecha_inicioNuevaTarea.getValue()), Date.valueOf(fecha_finalNuevaTarea.getValue()), prioridad.getValue());
       if (t.crearTarea()) {
         newTaskTab.setVisible(false);
         newTaskTab.setDisable(true);
@@ -587,6 +631,7 @@ public class CodeFlowController implements Initializable {
 
   }
 
+  // ---- Ventana de confirmación al cerrar la ventana de crear/editar una nueva tarea.
   void confirmCloseTask(ActionEvent event) {
 
     alertTaskText.setText("Va a perder los datos introducidos");
@@ -596,6 +641,114 @@ public class CodeFlowController implements Initializable {
 
     newTaskTab.setVisible(false);
     newTaskTab.setDisable(true);
+
+  }
+
+  // ---- Función que muestra el panel de confirmacion de borrado de tarea.
+  @FXML
+  void confirmDeleteTarea(ActionEvent event) {
+    alertTaskText.setText("¿Seguro que quiere borrar la tarea?");
+
+    alertTask.setVisible(true);
+    alertTask.setDisable(false);
+
+    viewTaskInfo.setVisible(false);
+    viewTaskInfo.setDisable(true);
+
+    alertTaskButton.setOnAction(e -> {
+      borrarTarea(tareaActual);
+      alertTask.setVisible(false);
+      alertTask.setDisable(true);
+      tareaActual = null;
+    });
+
+  }
+
+  public void borrarTarea(Tarea t) {
+    if (t.eliminar()) {
+      System.out.println("Tarea borrada.");
+    }
+    mostrarTareas(proyecto);
+  }
+
+  // ---- Función que muestra el panel de edición de la tarea.
+  @FXML
+  void editTaskTab(ActionEvent event) {
+
+    viewTaskInfo.setVisible(false);
+    viewTaskInfo.setDisable(true);
+
+    nombreNuevaTarea.setText(tareaActual.getNombre());
+    descripcionNuevaTarea.setText(tareaActual.getDescripcion());
+    fecha_inicioNuevaTarea.setValue(tareaActual.getFecha_inicio().toLocalDate());
+    fecha_finalNuevaTarea.setValue(tareaActual.getFecha_fin().toLocalDate());
+
+    if (tareaActual.getPrioridad().equals("ALTA")) {
+      prioridad.setValue(Prioridad.ALTA);
+    } else if (tareaActual.getPrioridad().equals("MEDIA")) {
+      prioridad.setValue(Prioridad.MEDIA);
+    } else if (tareaActual.getPrioridad().equals("BAJA")) {
+      prioridad.setValue(Prioridad.BAJA);
+    }
+
+    newTaskTab.setVisible(true);
+    newTaskTab.setDisable(false);
+
+    createTaskButton.setOnAction(e -> {
+
+      tareaActual.setNombre(nombreNuevaTarea.getText());
+      tareaActual.setDescripcion(descripcionNuevaTarea.getText());
+      tareaActual.setFecha_inicio(Date.valueOf(fecha_inicioNuevaTarea.getValue()));
+      tareaActual.setFecha_fin(Date.valueOf(fecha_finalNuevaTarea.getValue()));
+      tareaActual.setPrioridad(prioridad.getValue());
+
+      if (tareaActual.update()) {
+        newTaskTab.setVisible(false);
+        newTaskTab.setDisable(true);
+        resetForm(1);
+        mostrarTareas(proyecto);
+      }
+
+      createTaskButton.setOnAction(a -> {
+        createTask(event);
+      });
+
+    });
+
+  }
+
+  @FXML
+  public void editProjectTab(ActionEvent event) {
+
+    nombre.setText(proyecto.getNombre());
+    descripcion.setText(proyecto.getDescripcion());
+    fileChooser.setText(proyecto.getImagen());
+    fecha_inicio.setValue(proyecto.getFecha_inicio().toLocalDate());
+    fecha_final.setValue(proyecto.getFecha_final().toLocalDate());
+
+    newProjectTab.setVisible(true);
+    newProjectTab.setDisable(false);
+
+    createProjectButton.setOnAction(e -> {
+
+      proyecto.setNombre(nombre.getText());
+      proyecto.setDescripcion(descripcion.getText());
+      proyecto.setImagen(fileChooser.getText());
+      proyecto.setFecha_inicio(Date.valueOf(fecha_inicio.getValue()));
+      proyecto.setFecha_final(Date.valueOf(fecha_final.getValue()));
+
+      if (proyecto.update()) {
+        newProjectTab.setVisible(false);
+        newProjectTab.setDisable(true);
+        resetForm(0);
+        mostrarTareas(proyecto);
+      }
+
+      createProjectButton.setOnAction(a -> {
+        createProject(event);
+      });
+
+    });
 
   }
 

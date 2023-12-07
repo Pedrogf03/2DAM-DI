@@ -51,78 +51,7 @@
             <FlowPane fx:id="flowPane" style="-fx-background-color: #0C1640;" />
          </content>
       </ScrollPane>
-      <AnchorPane fx:id="newProjectTab" disable="true" layoutX="100.0" layoutY="50.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #0C1640;" visible="false">
-         <effect>
-            <DropShadow />
-         </effect>
-         <children>
-            <Text fill="#ffc107" layoutX="14.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuevo proyecto">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="36.0" />
-               </font>
-            </Text>
-            <ImageView fitHeight="410.0" fitWidth="243.0" layoutX="497.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../bin/img/sideProjectTabImg.jpg" />
-               </image>
-            </ImageView>
-            <Label layoutX="15.0" layoutY="93.0" text="Nombre" textFill="WHITE">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="14.0" />
-               </font>
-            </Label>
-            <TextField fx:id="nombre" layoutX="15.0" layoutY="109.0" prefHeight="26.0" prefWidth="182.0" />
-            <Label layoutX="15.0" layoutY="147.0" text="Descripción" textFill="WHITE">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="14.0" />
-               </font>
-            </Label>
-            <TextArea fx:id="descripcion" layoutX="15.0" layoutY="163.0" prefHeight="140.0" prefWidth="182.0" />
-            <Label layoutX="15.0" layoutY="317.0" text="Seleccionar imagen" textFill="WHITE">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="14.0" />
-               </font>
-            </Label>
-            <Button fx:id="fileChooser" layoutX="14.0" layoutY="333.0" mnemonicParsing="false" onAction="#fileSelector" prefHeight="26.0" prefWidth="182.0" style="-fx-background-color: #FFC107;" text="📁" textFill="WHITE">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor></Button>
-            <DatePicker fx:id="fecha_inicio" editable="false" layoutX="233.0" layoutY="109.0" prefHeight="26.0" prefWidth="182.0" />
-            <Label layoutX="233.0" layoutY="93.0" text="Fecha de inicio" textFill="WHITE">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="14.0" />
-               </font>
-            </Label>
-            <DatePicker fx:id="fecha_final" editable="false" layoutX="233.0" layoutY="171.0" prefHeight="26.0" prefWidth="182.0" />
-            <Label layoutX="233.0" layoutY="155.0" text="Fecha de final" textFill="WHITE">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="14.0" />
-               </font>
-            </Label>
-            <Button fx:id="createProjectButton" layoutX="259.0" layoutY="276.0" mnemonicParsing="false" onAction="#createProject" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: #FFC107;" text="Crear" textFill="WHITE">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="12.0" />
-               </font>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-            <Text fx:id="errorMsg" fill="RED" layoutX="245.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
-               <font>
-                  <Font name="Franklin Gothic Demi" size="12.0" />
-               </font>
-            </Text>
-            <Button fx:id="closeProjectTab" layoutX="665.0" layoutY="2.0" mnemonicParsing="false" onAction="#closePanel" style="-fx-background-color: none;">
-               <graphic>
-                  <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" />
-               </graphic>
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </Button>
-         </children>
-      </AnchorPane>
-      <AnchorPane fx:id="tareas" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <AnchorPane fx:id="tareas" disable="true" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox maxWidth="100.0" minWidth="100.0" prefHeight="500.0" prefWidth="100.0" style="-fx-background-color: #FFC107;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -140,6 +69,17 @@
                      </font>
                      <graphic>
                         <FontAwesomeIconView glyphName="ARROW_LEFT" wrappingWidth="41.942874908447266" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="editarProyecto" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#editProjectTab" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font name="System Bold" size="48.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="EDIT" wrappingWidth="36.342899322509766" />
                      </graphic>
                   </Button>
                   <Button fx:id="borrarProyecto" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#confirmBorrarProyecto" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
@@ -296,6 +236,54 @@
                   </Label>
                </children>
             </AnchorPane>
+            <AnchorPane fx:id="viewTaskInfo" disable="true" layoutX="194.0" layoutY="66.0" prefHeight="368.0" prefWidth="510.0" style="-fx-background-color: #0C1640;" visible="false">
+               <children>
+                  <Text fx:id="viewNombreTask" fill="#ffc107" layoutX="14.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NombreTarea">
+                     <font>
+                        <Font name="Franklin Gothic Demi" size="36.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="viewFechasTask" fill="WHITE" layoutX="14.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FechaInicio - FechaFinal">
+                     <font>
+                        <Font name="Consolas" size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="viewDuracionTask" fill="WHITE" layoutX="14.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion">
+                     <font>
+                        <Font name="Consolas" size="24.0" />
+                     </font>
+                  </Text>
+                  <Text fx:id="viewDescTask" fill="WHITE" layoutX="15.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion de la tarea, lorem ipsum dolor sit amet" textAlignment="JUSTIFY" wrappingWidth="480.0">
+                     <font>
+                        <Font name="Consolas" size="24.0" />
+                     </font>
+                  </Text>
+                  <Button fx:id="updateTareaButton" layoutX="402.0" layoutY="18.0" mnemonicParsing="false" onAction="#editTaskTab" prefHeight="32.0" prefWidth="35.0" style="-fx-background-color: none;">
+                     <graphic>
+                        <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="24" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="closeViewTaskTab" layoutX="460.0" layoutY="14.0" mnemonicParsing="false" onAction="#closePanel" style="-fx-background-color: none;">
+                     <graphic>
+                        <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" />
+                     </graphic>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </Button>
+                  <Button fx:id="deleteTarea" layoutX="15.0" layoutY="322.0" mnemonicParsing="false" onAction="#confirmDeleteTarea" style="-fx-background-color: #ffc107;" text="Borrar tarea">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                     <font>
+                        <Font name="Franklin Gothic Demi" size="18.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
             <AnchorPane fx:id="alertTask" disable="true" layoutX="280.0" layoutY="174.0" prefHeight="151.0" prefWidth="335.0" style="-fx-background-color: #0C1640; -fx-border-color: #FFC107;" visible="false">
                <effect>
                   <DropShadow />
@@ -324,6 +312,77 @@
                   </Button>
                </children>
             </AnchorPane>
+         </children>
+      </AnchorPane>
+      <AnchorPane fx:id="newProjectTab" disable="true" layoutX="100.0" layoutY="50.0" prefHeight="400.0" prefWidth="700.0" style="-fx-background-color: #0C1640;" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+         <children>
+            <Text fill="#ffc107" layoutX="14.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuevo proyecto">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="36.0" />
+               </font>
+            </Text>
+            <ImageView fitHeight="410.0" fitWidth="243.0" layoutX="497.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../bin/img/sideProjectTabImg.jpg" />
+               </image>
+            </ImageView>
+            <Label layoutX="15.0" layoutY="93.0" text="Nombre" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="nombre" layoutX="15.0" layoutY="109.0" prefHeight="26.0" prefWidth="182.0" />
+            <Label layoutX="15.0" layoutY="147.0" text="Descripción" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="14.0" />
+               </font>
+            </Label>
+            <TextArea fx:id="descripcion" layoutX="15.0" layoutY="163.0" prefHeight="140.0" prefWidth="182.0" />
+            <Label layoutX="15.0" layoutY="317.0" text="Seleccionar imagen" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="fileChooser" layoutX="14.0" layoutY="333.0" mnemonicParsing="false" onAction="#fileSelector" prefHeight="26.0" prefWidth="182.0" style="-fx-background-color: #FFC107;" text="📁" textFill="WHITE">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor></Button>
+            <DatePicker fx:id="fecha_inicio" editable="false" layoutX="233.0" layoutY="109.0" prefHeight="26.0" prefWidth="182.0" />
+            <Label layoutX="233.0" layoutY="93.0" text="Fecha de inicio" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="14.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="fecha_final" editable="false" layoutX="233.0" layoutY="171.0" prefHeight="26.0" prefWidth="182.0" />
+            <Label layoutX="233.0" layoutY="155.0" text="Fecha de final" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="14.0" />
+               </font>
+            </Label>
+            <Button fx:id="createProjectButton" layoutX="259.0" layoutY="276.0" mnemonicParsing="false" onAction="#createProject" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: #FFC107;" text="Crear" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="12.0" />
+               </font>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Text fx:id="errorMsg" fill="RED" layoutX="245.0" layoutY="237.0" strokeType="OUTSIDE" strokeWidth="0.0" textAlignment="CENTER" visible="false" wrappingWidth="150.0">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="12.0" />
+               </font>
+            </Text>
+            <Button fx:id="closeProjectTab" layoutX="665.0" layoutY="2.0" mnemonicParsing="false" onAction="#closePanel" style="-fx-background-color: none;">
+               <graphic>
+                  <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
          </children>
       </AnchorPane>
       <AnchorPane fx:id="confirmAlert" disable="true" layoutX="283.0" layoutY="178.0" prefHeight="151.0" prefWidth="335.0" style="-fx-background-color: #0C1640; -fx-border-color: #FFC107;" visible="false">
