@@ -251,6 +251,7 @@ public class CodeFlowController implements Initializable {
       fecha_inicio.setValue(null);
       fecha_final.setValue(null);
       errorMsg.setText("");
+      file.imagenProyecto = null;
     } else if (option == 1) {
       nombreNuevaTarea.setText("");
       descripcionNuevaTarea.setText("");
