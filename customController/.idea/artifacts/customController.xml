@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" build-on-make="true" name="customController">
+    <output-path>$PROJECT_DIR$/out/artifacts/customController</output-path>
+    <root id="root">
+      <element id="archive" name="customController.jar">
+        <element id="module-output" name="customController" />
+      </element>
+    </root>
+  </artifact>
+</component>
