@@ -25,12 +25,25 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Callback;
-
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
 import javafx.event.EventHandler;
+
+import java.io.File;
+import java.io.InputStream;
 import java.net.URL;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.Set;
 
@@ -53,6 +66,9 @@ public class CodeFlowController implements Initializable {
   // ---- Botón que muestra el panel de creación de un nuevo proyecto.
   @FXML
   private Button newProjectButton;
+
+  @FXML
+  private Button generateReport;
 
   // ---- Panel que contiene todos los proyectos.
   @FXML
@@ -179,6 +195,11 @@ public class CodeFlowController implements Initializable {
   void showNewProjectTab(ActionEvent event) {
     newProjectTab.setVisible(true);
     newProjectTab.setDisable(false);
+  }
+
+  @FXML
+  void generarReporte(ActionEvent event) {
+
   }
 
   // ---- Función genérica de cerrar paneles
