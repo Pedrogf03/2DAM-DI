@@ -1,4 +1,4 @@
-package controller;
+package com.sorteoalumnos;
 
 import java.net.URL;
 import java.util.ArrayList;
