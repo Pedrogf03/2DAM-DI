@@ -1,0 +1,8 @@
+<map version="1.0">
+  <mapID target="aplicacion" url="html/main.html" />
+  <mapID target="proyectos" url="html/proyectos.html" />
+  <mapID target="tareas" url="html/tareas.html" />
+  <mapID target="baseDatos" url="html/baseDatos.html" />
+  <mapID target="reporte" url="html/reporte.html" />
+  <mapID target="otros" url="html/otros.html" />
+</map>

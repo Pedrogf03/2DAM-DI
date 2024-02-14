@@ -17,6 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -49,6 +53,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.io.File;
+
+import javax.help.HelpSet;
+import javax.help.HelpBroker;
 
 public class CodeFlowController implements Initializable {
 
@@ -60,12 +68,20 @@ public class CodeFlowController implements Initializable {
 
   private Set<Proyecto> proyectos;
 
+  // ---- Panel principal
+
+  @FXML
+  private AnchorPane root;
+
   // ---- Botón que muestra el panel de creación de un nuevo proyecto.
   @FXML
   private Button newProjectButton;
 
   @FXML
   private Button generateReport;
+
+  @FXML
+  private Button javaHelpButton;
 
   // ---- Panel que contiene todos los proyectos.
   @FXML
@@ -185,6 +201,17 @@ public class CodeFlowController implements Initializable {
 
     mostrarProyectos();
 
+    root.addEventFilter(KeyEvent.KEY_PRESSED, new EventHandler<KeyEvent>() {
+      final KeyCombination keyComb1 = new KeyCodeCombination(KeyCode.F1);
+
+      public void handle(KeyEvent event) {
+        if (keyComb1.match(event)) {
+          showHelp();
+          event.consume(); // consume the event
+        }
+      }
+    });
+
   }
 
   // ---- Función para mostrar el panel de creación de un nuevo proyecto.
@@ -192,6 +219,21 @@ public class CodeFlowController implements Initializable {
   void showNewProjectTab(ActionEvent event) {
     newProjectTab.setVisible(true);
     newProjectTab.setDisable(false);
+  }
+
+  @FXML
+  private void showHelp() {
+
+    try {
+      // Código para abrir JavaHelp
+      URL helpURL = this.getClass().getResource("/JavaHelpCodeFlow/help_set.hs");
+      HelpSet helpset = new HelpSet(null, helpURL);
+      HelpBroker hb = helpset.createHelpBroker();
+      hb.setDisplayed(true);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
   }
 
   @FXML

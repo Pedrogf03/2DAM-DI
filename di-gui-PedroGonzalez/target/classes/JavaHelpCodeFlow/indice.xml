@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<index version="1.0">
+  <indexitem text="Codeflow" target="aplicacion" />
+  <indexitem text="Proyectos" target="proyectos" />
+  <indexitem text="Tareas" target="tareas" />
+  <indexitem text="Base de Datos" target="baseDatos" />
+  <indexitem text="Reporte" target="reporte" />
+  <indexitem text="Otros" target="otros" />
+</index>
