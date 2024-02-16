@@ -53,7 +53,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.Set;
-import java.io.File;
 
 import javax.help.HelpSet;
 import javax.help.HelpBroker;
