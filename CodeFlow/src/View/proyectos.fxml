@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Proyectos">
+   <children>
+      <VBox maxWidth="100.0" minWidth="100.0" prefHeight="500.0" prefWidth="100.0" style="-fx-background-color: #FFC107;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../bin/img/appIcon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="botonCrearProyecto" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#crearProyecto" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="PLUS_CIRCLE" wrappingWidth="41.942874908447266" />
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <Text fill="#ffc107" layoutX="111.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tus proyectos">
+         <font>
+            <Font name="Franklin Gothic Demi" size="48.0" />
+         </font>
+      </Text>
+      <ScrollPane fx:id="scrollPane" layoutX="111.0" layoutY="78.0" minHeight="410.0" minWidth="776.0" prefHeight="410.0" prefWidth="776.0" style="-fx-background-color: #0C1640;" AnchorPane.bottomAnchor="11.200000000000045" AnchorPane.leftAnchor="111.0" AnchorPane.rightAnchor="12.799999999999955" AnchorPane.topAnchor="78.0">
+         <content>
+            <FlowPane fx:id="flowPane" style="-fx-background-color: #0C1640;" />
+         </content>
+      </ScrollPane>
+      <ChoiceBox fx:id="filtro" layoutX="613.0" layoutY="28.0" prefHeight="26.0" prefWidth="182.0" AnchorPane.rightAnchor="105.0" AnchorPane.topAnchor="28.0" />
+      <Button fx:id="botonFiltrar" layoutX="817.0" layoutY="29.0" mnemonicParsing="false" onAction="#filtrar" style="-fx-background-color: #FFC107;" text="Filtrar" textFill="#0c1640" AnchorPane.rightAnchor="34.0" AnchorPane.topAnchor="29.0">
+         <font>
+            <Font name="Franklin Gothic Demi" size="12.0" />
+         </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+      </Button>
+   </children>
+</AnchorPane>

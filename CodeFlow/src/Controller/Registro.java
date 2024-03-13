@@ -10,42 +10,46 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
-public class Login {
+public class Registro {
 
   @FXML
   private TextField usuario;
   @FXML
   private PasswordField password;
+  @FXML
+  private PasswordField repetirPassword;
 
   @FXML
   private Text mensajeError;
 
   @FXML
-  private Button botonLogin;
-  @FXML
   private Button botonRegistro;
+  @FXML
+  private Button botonLogin;
 
   DB database = new DB();
 
   @FXML
-  void iniciarSesion() throws IOException {
+  void registrarse() throws IOException {
 
     Usuario u = database.getUsuario(usuario.getText().trim(), password.getText().trim());
 
     if (u == null) {
+      if (database.registrarUsuario(usuario.getText().trim(), password.getText().trim())) {
+        login();
+      }
+    } else {
       usuario.setText("");
       password.setText("");
+      repetirPassword.setText("");
       mensajeError.setVisible(true);
-    } else {
-      Proyectos.setUsuario(u);
-      CodeFlow.setRoot("proyectos");
     }
 
   }
 
   @FXML
-  void registrarse() throws IOException {
-    CodeFlow.setRoot("registro");
+  void login() throws IOException {
+    CodeFlow.setRoot("login");
   }
 
 }

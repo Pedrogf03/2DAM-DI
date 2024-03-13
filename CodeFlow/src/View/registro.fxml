@@ -11,14 +11,14 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Login">
+<AnchorPane maxHeight="1080.0" maxWidth="1920.0" minHeight="400.0" minWidth="600.0" prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Registro">
    <children>
-      <Text fill="#ffc107" layoutX="343.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Iniciar Sesión">
+      <Text fill="#ffc107" layoutX="359.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrarse">
          <font>
             <Font name="Franklin Gothic Demi" size="36.0" />
          </font>
       </Text>
-      <VBox layoutX="313.0" layoutY="150.0" prefHeight="260.0" prefWidth="274.0" style="-fx-background-color: #FFC107; -fx-alignment: center;">
+      <VBox layoutX="313.0" layoutY="137.0" prefHeight="300.0" prefWidth="274.0" style="-fx-background-color: #FFC107; -fx-alignment: center;">
          <children>
             <Label text="Usuario">
                <font>
@@ -27,7 +27,7 @@
             </Label>
             <TextField fx:id="usuario" prefHeight="25.0" prefWidth="78.0">
                <VBox.margin>
-                  <Insets bottom="30.0" left="40.0" right="40.0" />
+                  <Insets bottom="15.0" left="40.0" right="40.0" />
                </VBox.margin>
                <cursor>
                   <Cursor fx:constant="TEXT" />
@@ -43,15 +43,28 @@
                   <Insets />
                </opaqueInsets>
                <VBox.margin>
+                  <Insets bottom="15.0" left="40.0" right="40.0" />
+               </VBox.margin>
+            </PasswordField>
+            <Label text="Repetir contraseña">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="24.0" />
+               </font>
+            </Label>
+            <PasswordField fx:id="repetirPassword">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
                   <Insets bottom="12.0" left="40.0" right="40.0" />
                </VBox.margin>
             </PasswordField>
-            <Text fx:id="mensajeError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario o contraseña incorrectos" visible="false">
+            <Text fx:id="mensajeError" fill="RED" strokeType="OUTSIDE" strokeWidth="0.0" text="Ese usuario ya existe" visible="false">
                <VBox.margin>
-                  <Insets bottom="12.0" />
+                  <Insets bottom="10.0" />
                </VBox.margin>
             </Text>
-            <Button fx:id="botonLogin" mnemonicParsing="false" onAction="#iniciarSesion" style="-fx-background-color: #0C1640;" text="Iniciar Sesión" textFill="#ffc107">
+            <Button fx:id="botonRegistro" mnemonicParsing="false" onAction="#registrarse" style="-fx-background-color: #0C1640;" text="Registrarse" textFill="#ffc107">
                <font>
                   <Font name="Franklin Gothic Demi" size="18.0" />
                </font>
@@ -62,7 +75,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Button fx:id="botonRegistro" mnemonicParsing="false" onAction="#registrarse" style="-fx-background: none;" text="Registrarse" underline="true">
+            <Button fx:id="botonLogin" mnemonicParsing="false" onAction="#login" style="-fx-background: none;" text="Iniciar Sesión" underline="true">
                <font>
                   <Font name="Franklin Gothic Demi" size="10.0" />
                </font>

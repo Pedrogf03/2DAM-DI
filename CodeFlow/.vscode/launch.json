@@ -6,11 +6,11 @@
   "configurations": [
     {
       "type": "java",
-      "name": "App",
+      "name": "CodeFlow",
       "request": "launch",
-      "mainClass": "App",
+      "mainClass": "Controller.CodeFlow",
       "projectName": "CodeFlow_f0a7f15a",
-      "vmArgs": "--module-path 'C:/Program Files/Java/javafx-sdk-17.0.10/lib' --add-modules javafx.controls,javafx.fxml"
+      "vmArgs": "--module-path 'C:/Program Files/Java/javafx-sdk-21.0.2/lib' --add-modules javafx.controls,javafx.fxml"
     },
     {
       "type": "java",
