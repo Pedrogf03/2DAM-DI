@@ -1,6 +1,9 @@
 package Model;
 
 import java.sql.Date;
+import java.util.List;
+
+import DAO.DB;
 
 public class Proyecto {
 
@@ -11,6 +14,8 @@ public class Proyecto {
   private String imagen = "default.png";
   private Date fecha_inicio;
   private Date fecha_final;
+  private List<Tarea> tareas;
+  private DB database = new DB();
 
   public Proyecto(int idProyecto, int idUsuario, String nombre, String descripcion, String imagen, Date fecha_inicio, Date fecha_final) {
     this.idProyecto = idProyecto;
@@ -20,6 +25,9 @@ public class Proyecto {
     this.imagen = imagen;
     this.fecha_inicio = fecha_inicio;
     this.fecha_final = fecha_final;
+
+    this.tareas = database.getTareas(this.idProyecto);
+
   }
 
   public Proyecto(int idProyecto, int idUsuario, String nombre, String descripcion, Date fecha_inicio, Date fecha_final) {
@@ -29,6 +37,9 @@ public class Proyecto {
     this.descripcion = descripcion;
     this.fecha_inicio = fecha_inicio;
     this.fecha_final = fecha_final;
+
+    this.tareas = database.getTareas(this.idProyecto);
+
   }
 
   public int getIdProyecto() {
@@ -85,6 +96,18 @@ public class Proyecto {
 
   public void setIdUsuario(int idUsuario) {
     this.idUsuario = idUsuario;
+  }
+
+  public List<Tarea> getTareas() {
+    return tareas;
+  }
+
+  public void setTareas(List<Tarea> tareas) {
+    this.tareas = tareas;
+  }
+
+  public boolean borrar() {
+    return database.deleteProyecto(this.idProyecto);
   }
 
 }

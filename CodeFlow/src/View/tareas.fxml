@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="500.0" prefWidth="900.0" style="-fx-background-color: #0C1640;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.Tareas">
+   <children>
+      <VBox maxWidth="100.0" minWidth="100.0" prefHeight="500.0" prefWidth="100.0" style="-fx-background-color: #FFC107;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../di-gui-PedroGonzalez/src/main/resources/img/appIcon.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="botonVolverProyectos" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#volverProyectos" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="ARROW_LEFT" wrappingWidth="41.942874908447266" />
+               </graphic>
+            </Button>
+            <Button fx:id="botonEditarProyecto" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#editarProyecto" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="EDIT" wrappingWidth="36.342899322509766" />
+               </graphic>
+            </Button>
+            <Button fx:id="botonBorrarProyecto" maxHeight="100.0" maxWidth="100.0" minHeight="100.0" minWidth="100.0" mnemonicParsing="false" onAction="#borrarProyecto" prefHeight="100.0" prefWidth="100.0" style="-fx-background-color: none;">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="System Bold" size="48.0" />
+               </font>
+               <graphic>
+                  <FontAwesomeIconView glyphName="CLOSE" wrappingWidth="36.342899322509766" />
+               </graphic>
+            </Button>
+         </children>
+      </VBox>
+      <Text fx:id="nombreProyecto" fill="#ffc107" layoutX="114.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Proyecto p">
+         <font>
+            <Font name="Franklin Gothic Demi" size="48.0" />
+         </font>
+      </Text>
+      <Text fx:id="fechasProyecto" fill="#ffc107" layoutX="546.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="fecha1 - fecha2" textAlignment="RIGHT" wrappingWidth="339.20000000000005" AnchorPane.rightAnchor="14.799999999999955">
+         <font>
+            <Font name="Franklin Gothic Demi" size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="descripcionProyecto" fill="#f1f1f1" layoutX="114.0" layoutY="89.0" strokeType="OUTSIDE" strokeWidth="0.0" text="descripcion del proyecto" textAlignment="JUSTIFY" wrappingWidth="300.0">
+         <font>
+            <Font name="Consolas" size="12.0" />
+         </font>
+      </Text>
+      <HBox alignment="CENTER" layoutX="114.0" layoutY="124.0" maxWidth="776.0" minWidth="776.0" prefHeight="368.0" prefWidth="776.0" spacing="10.0" AnchorPane.bottomAnchor="8.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="9.600000000000023" AnchorPane.topAnchor="124.0">
+         <children>
+            <ScrollPane fx:id="scrollTareasPendientes" hbarPolicy="NEVER" maxWidth="250.0" minWidth="250.0" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #0C1640;" vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #292929;">
+                     <children>
+                        <AnchorPane prefHeight="18.0" prefWidth="250.0">
+                           <children>
+                              <Text fill="#ffc107" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pendientes" textAlignment="CENTER" wrappingWidth="147.05976486206055">
+                                 <font>
+                                    <Font name="Franklin Gothic Demi" size="24.0" />
+                                 </font>
+                              </Text>
+                              <Button fx:id="botonCrearTarea" alignment="CENTER_RIGHT" layoutX="216.0" layoutY="3.0" mnemonicParsing="false" onAction="#crearTarea" style="-fx-background-color: none;">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="WHITE" glyphName="PLUS" size="15" />
+                                 </graphic>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                        <VBox fx:id="tareasPendientes" prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="scrollTareasEnProceso" hbarPolicy="NEVER" maxWidth="250.0" minWidth="250.0" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #0C1640;" vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #292929;">
+                     <children>
+                        <Text fill="#ffc107" strokeType="OUTSIDE" strokeWidth="0.0" text="En proceso" textAlignment="CENTER" wrappingWidth="142.25983810424805">
+                           <font>
+                              <Font name="Franklin Gothic Demi" size="24.0" />
+                           </font>
+                        </Text>
+                        <VBox fx:id="tareasEnProceso" prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+            <ScrollPane fx:id="scrollTareasFinalizadas" hbarPolicy="NEVER" maxWidth="250.0" minWidth="250.0" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #0C1640;" vbarPolicy="NEVER" HBox.hgrow="ALWAYS">
+               <content>
+                  <VBox prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: #292929;">
+                     <children>
+                        <Text fill="#ffc107" strokeType="OUTSIDE" strokeWidth="0.0" text="Finalizadas" textAlignment="CENTER" wrappingWidth="149.45978927612305">
+                           <font>
+                              <Font name="Franklin Gothic Demi" size="24.0" />
+                           </font>
+                        </Text>
+                        <VBox fx:id="tareasFinalizadas" prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                  </VBox>
+               </content>
+            </ScrollPane>
+         </children>
+      </HBox>
+      <AnchorPane fx:id="botonInfoTarea" disable="true" layoutX="194.0" layoutY="66.0" onDragDetected="#mostrarInfoTarea" prefHeight="368.0" prefWidth="510.0" style="-fx-background-color: #0C1640;" visible="false">
+         <children>
+            <Text fx:id="nombreTarea" fill="#ffc107" layoutX="14.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NombreTarea">
+               <font>
+                  <Font name="Franklin Gothic Demi" size="36.0" />
+               </font>
+            </Text>
+            <Text fx:id="fechasTarea" fill="WHITE" layoutX="14.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FechaInicio - FechaFinal">
+               <font>
+                  <Font name="Consolas" size="24.0" />
+               </font>
+            </Text>
+            <Text fx:id="duracionTarea" fill="WHITE" layoutX="14.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion">
+               <font>
+                  <Font name="Consolas" size="24.0" />
+               </font>
+            </Text>
+            <Text fx:id="descripcionTarea" fill="WHITE" layoutX="15.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion de la tarea, lorem ipsum dolor sit amet" textAlignment="JUSTIFY" wrappingWidth="480.0">
+               <font>
+                  <Font name="Consolas" size="24.0" />
+               </font>
+            </Text>
+            <Button fx:id="botonEditarTarea" layoutX="402.0" layoutY="18.0" mnemonicParsing="false" onAction="#editarTarea" prefHeight="32.0" prefWidth="35.0" style="-fx-background-color: none;">
+               <graphic>
+                  <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="24" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="botonCerrarInfo" layoutX="460.0" layoutY="14.0" mnemonicParsing="false" onAction="#cerrarInfo" style="-fx-background-color: none;">
+               <graphic>
+                  <FontAwesomeIconView fill="#ffc107" glyphName="CLOSE" size="24" />
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="botonBorrarTarea" layoutX="15.0" layoutY="322.0" mnemonicParsing="false" onAction="#borrarTarea" style="-fx-background-color: #ffc107;" text="Borrar tarea">
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+               <font>
+                  <Font name="Franklin Gothic Demi" size="18.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>

@@ -5,7 +5,6 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import DAO.DB;
 import Model.Proyecto;
 import Model.Usuario;
 import javafx.event.ActionEvent;
@@ -29,7 +28,6 @@ import javafx.scene.text.Font;
 public class Proyectos implements Initializable {
 
   private static Usuario usuario;
-  private DB database = new DB();
   private List<Proyecto> proyectos;
 
   @FXML
@@ -64,13 +62,13 @@ public class Proyectos implements Initializable {
   void filtrar() {
     if (filtro.getValue() != null) {
       if (filtro.getValue().equals("Por defecto")) {
-        proyectos = database.getProyectos(usuario.getIdUsuario());
+        proyectos = usuario.getProyectos();
       } else if (filtro.getValue().equals("Orden Alfabético")) {
-        proyectos = database.getProyectosAlfabetico(usuario.getIdUsuario());
+        proyectos = usuario.getProyectosAlfabetico();
       } else if (filtro.getValue().equals("Finalizan antes")) {
-        proyectos = database.getProyectosFin(usuario.getIdUsuario());
+        proyectos = usuario.getProyectosFin();
       } else if (filtro.getValue().equals("Nº Tareas")) {
-        proyectos = database.getProyectosTareas(usuario.getIdUsuario());
+        proyectos = usuario.getProyectosTareas();
       }
       mostrarProyectos();
     }
@@ -100,7 +98,13 @@ public class Proyectos implements Initializable {
           EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
-              // TODO: mostrarTareas(p);
+              try {
+                Tareas.setUsuario(usuario);
+                Tareas.setProyecto(p);
+                CodeFlow.setRoot("tareas");
+              } catch (IOException e) {
+                e.printStackTrace();
+              }
             }
           };
 

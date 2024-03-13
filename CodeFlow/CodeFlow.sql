@@ -5,30 +5,36 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION';
 
 -- -----------------------------------------------------
--- Schema CodeFlow
+-- Schema mydb
+-- -----------------------------------------------------
+-- -----------------------------------------------------
+-- Schema codeflow
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema CodeFlow
+-- Schema codeflow
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `CodeFlow` DEFAULT CHARACTER SET utf8 ;
-USE `CodeFlow` ;
+CREATE SCHEMA IF NOT EXISTS `codeflow` DEFAULT CHARACTER SET utf8mb3 ;
+USE `codeflow` ;
 
 -- -----------------------------------------------------
--- Table `CodeFlow`.`Usuario`
+-- Table `codeflow`.`usuario`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeFlow`.`Usuario` (
+CREATE TABLE IF NOT EXISTS `codeflow`.`usuario` (
   `idUsuario` INT UNSIGNED NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `password` VARCHAR(500) NOT NULL,
-  PRIMARY KEY (`idUsuario`))
-ENGINE = InnoDB;
+  PRIMARY KEY (`idUsuario`),
+  UNIQUE INDEX `nombre_UNIQUE` (`nombre` ASC) VISIBLE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `CodeFlow`.`Proyecto`
+-- Table `codeflow`.`proyecto`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeFlow`.`Proyecto` (
+CREATE TABLE IF NOT EXISTS `codeflow`.`proyecto` (
   `idProyecto` INT NOT NULL AUTO_INCREMENT,
   `idUsuario` INT UNSIGNED NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
@@ -40,16 +46,18 @@ CREATE TABLE IF NOT EXISTS `CodeFlow`.`Proyecto` (
   INDEX `fk_Proyecto_Usuario_idx` (`idUsuario` ASC) VISIBLE,
   CONSTRAINT `fk_Proyecto_Usuario`
     FOREIGN KEY (`idUsuario`)
-    REFERENCES `CodeFlow`.`Usuario` (`idUsuario`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `codeflow`.`usuario` (`idUsuario`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `CodeFlow`.`Tarea`
+-- Table `codeflow`.`tarea`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `CodeFlow`.`Tarea` (
+CREATE TABLE IF NOT EXISTS `codeflow`.`tarea` (
   `idTarea` INT NOT NULL AUTO_INCREMENT,
   `idProyecto` INT NOT NULL,
   `nombre` VARCHAR(45) NOT NULL,
@@ -61,10 +69,11 @@ CREATE TABLE IF NOT EXISTS `CodeFlow`.`Tarea` (
   INDEX `fk_Tareas_Proyecto1_idx` (`idProyecto` ASC) VISIBLE,
   CONSTRAINT `fk_Tareas_Proyecto1`
     FOREIGN KEY (`idProyecto`)
-    REFERENCES `CodeFlow`.`Proyecto` (`idProyecto`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+    REFERENCES `codeflow`.`proyecto` (`idProyecto`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;

@@ -6,7 +6,6 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-import DAO.DB;
 import DAO.FileFun;
 import Model.Usuario;
 import javafx.event.ActionEvent;
@@ -26,7 +25,6 @@ public class NuevoProyecto implements Initializable {
 
   private FileFun file = new FileFun();
   private static Usuario usuario;
-  private DB database = new DB();
 
   @FXML
   private Button botonCerrar;
@@ -104,7 +102,7 @@ public class NuevoProyecto implements Initializable {
       errorMsg.setVisible(true);
     } else {
 
-      if (database.crearProyecto(usuario.getIdUsuario(), nombre.getText(), descripcion.getText(), file.imagenProyecto, Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()))) {
+      if (usuario.crearProyecto(usuario.getIdUsuario(), nombre.getText(), descripcion.getText(), file.imagenProyecto, Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()))) {
         Proyectos.setUsuario(usuario);
         CodeFlow.setRoot("proyectos");
       } else {

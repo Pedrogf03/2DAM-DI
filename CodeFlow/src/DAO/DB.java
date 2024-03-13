@@ -9,7 +9,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Model.Prioridad;
 import Model.Proyecto;
+import Model.Tarea;
 import Model.Usuario;
 
 public class DB {
@@ -172,7 +174,7 @@ public class DB {
 
   }
 
-  public boolean crearProyecto(int idUsuario, String nombre, String descripcion, String imagen, Date fecha_inicio, Date fecha_final) {
+  public boolean insertarProyecto(int idUsuario, String nombre, String descripcion, String imagen, Date fecha_inicio, Date fecha_final) {
 
     try {
 
@@ -197,6 +199,60 @@ public class DB {
       e.printStackTrace();
       return false;
     }
+
+  }
+
+  public boolean deleteProyecto(int idProyecto) {
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("DELETE FROM proyecto WHERE idProyecto = ?");
+
+      ps.setInt(1, idProyecto);
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public List<Tarea> getTareas(int idProyecto) {
+
+    List<Tarea> tareas = new ArrayList<>();
+
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("SELECT * FROM tarea WHERE idProyecto = ?");
+      ps.setInt(1, idProyecto);
+      ResultSet rs = ps.executeQuery();
+
+      while (rs.next()) {
+
+        Prioridad pr = Prioridad.MEDIA;
+        if (rs.getString(7).equals("ALTA")) {
+          pr = Prioridad.ALTA;
+        } else if (rs.getString(7).equals("MEDIA")) {
+          pr = Prioridad.MEDIA;
+        } else if (rs.getString(7).equals("BAJA")) {
+          pr = Prioridad.BAJA;
+        }
+
+        Tarea t = new Tarea(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getString(4), rs.getDate(5), rs.getDate(6), pr);
+        tareas.add(t);
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+
+    return tareas;
 
   }
 
