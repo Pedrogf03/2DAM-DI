@@ -2,7 +2,9 @@ package Model;
 
 import java.sql.Date;
 
-public class Tarea {
+import DAO.DB;
+
+public class Tarea implements Comparable<Tarea> {
 
   private int idTarea;
   private int idProyecto;
@@ -11,6 +13,7 @@ public class Tarea {
   private Date fecha_inicio;
   private Date fecha_final;
   private Prioridad prioridad;
+  private DB database = new DB();
 
   public Tarea(int idTarea, int idProyecto, String nombre, String descripcion, Date fecha_inicio, Date fecha_final, Prioridad prioridad) {
     this.idTarea = idTarea;
@@ -76,6 +79,28 @@ public class Tarea {
 
   public void setPrioridad(Prioridad prioridad) {
     this.prioridad = prioridad;
+  }
+
+  public boolean borrar() {
+    return database.deleteTarea(this.idTarea);
+  }
+
+  @Override
+  public int compareTo(Tarea t) {
+    int resultado = this.getPrioridad().compareTo(t.getPrioridad());
+    if (resultado == 0) {
+      if (this.fecha_final.before(t.fecha_final)) {
+        resultado = -1;
+      } else if (this.fecha_final.after(t.fecha_final)) {
+        resultado = 1;
+      } else {
+        resultado = this.getNombre().compareTo(t.getNombre());
+        if (resultado == 0) {
+          return Integer.compare(this.idTarea, t.idTarea);
+        }
+      }
+    }
+    return resultado;
   }
 
 }

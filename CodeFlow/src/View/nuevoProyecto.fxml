@@ -63,7 +63,7 @@
         <Font name="Franklin Gothic Demi" size="14.0" />
       </font>
     </Label>
-    <Button fx:id="createProjectButton" layoutX="381.0" layoutY="300.0" mnemonicParsing="false" onAction="#createProject" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: #FFC107;" text="Crear" textFill="WHITE">
+    <Button fx:id="botonCrearProyecto" layoutX="381.0" layoutY="300.0" mnemonicParsing="false" onAction="#crearProyecto" prefHeight="26.0" prefWidth="122.0" style="-fx-background-color: #FFC107;" text="Crear" textFill="WHITE">
       <font>
         <Font name="Franklin Gothic Demi" size="12.0" />
       </font>

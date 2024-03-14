@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 import DAO.FileFun;
+import Model.Proyecto;
 import Model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -22,16 +23,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
-public class NuevoProyecto implements Initializable {
+public class EditarProyecto implements Initializable {
 
   private FileFun file = new FileFun();
   private static Usuario usuario;
+  private static Proyecto proyecto;
 
   @FXML
   private Button botonCerrar;
 
   @FXML
-  private Button botonCrearProyecto;
+  private Button botonEditarProyecto;
 
   @FXML
   private TextArea descripcion;
@@ -67,8 +69,9 @@ public class NuevoProyecto implements Initializable {
       alert.showAndWait().ifPresent(buttonType -> {
         if (buttonType == buttonTypeAceptar) {
           try {
-            Proyectos.setUsuario(usuario);
-            CodeFlow.setRoot("proyectos");
+            Tareas.setUsuario(usuario);
+            Tareas.setProyecto(proyecto);
+            CodeFlow.setRoot("tareas");
           } catch (IOException e) {
             e.printStackTrace();
           }
@@ -76,14 +79,15 @@ public class NuevoProyecto implements Initializable {
       });
 
     } else {
-      Proyectos.setUsuario(usuario);
-      CodeFlow.setRoot("proyectos");
+      Tareas.setUsuario(usuario);
+      Tareas.setProyecto(proyecto);
+      CodeFlow.setRoot("tareas");
     }
 
   }
 
   @FXML
-  void crearProyecto(ActionEvent event) throws IOException {
+  void editarProyecto(ActionEvent event) throws IOException {
 
     // Comprobación de que no haya campos obligatorios en blanco.
     if (nombre.getText().equals("")) {
@@ -103,18 +107,25 @@ public class NuevoProyecto implements Initializable {
       errorMsg.setVisible(true);
     } else {
 
-      if (usuario.crearProyecto(nombre.getText(), descripcion.getText(), file.imagenProyecto, Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()))) {
+      if (usuario.actualizarProyecto(proyecto.getIdProyecto(), nombre.getText(), descripcion.getText(), file.imagenProyecto, Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()))) {
+        proyecto.setNombre(nombre.getText());
+        proyecto.setDescripcion(descripcion.getText());
+        proyecto.setImagen(file.imagenProyecto);
+        proyecto.setFecha_inicio(Date.valueOf(fecha_inicio.getValue()));
+        proyecto.setFecha_final(Date.valueOf(fecha_final.getValue()));
+
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Proyecto creado correctamente");
+        alert.setTitle("Proyecto actualizado correctamente");
         alert.setHeaderText(null);
-        alert.setContentText("El proyecto se ha creado correctamente");
+        alert.setContentText("El proyecto se ha actualizado correctamente");
 
         alert.showAndWait();
 
-        Proyectos.setUsuario(usuario);
-        CodeFlow.setRoot("proyectos");
+        Tareas.setUsuario(usuario);
+        Tareas.setProyecto(proyecto);
+        CodeFlow.setRoot("tareas");
       } else {
-        errorMsg.setText("No se ha podido crear el proyecto.");
+        errorMsg.setText("No se ha podido actualizar el proyecto.");
         errorMsg.setVisible(true);
       }
 
@@ -132,7 +143,15 @@ public class NuevoProyecto implements Initializable {
   }
 
   public static void setUsuario(Usuario usuario) {
-    NuevoProyecto.usuario = usuario;
+    EditarProyecto.usuario = usuario;
+  }
+
+  public static Proyecto getProyecto() {
+    return proyecto;
+  }
+
+  public static void setProyecto(Proyecto proyecto) {
+    EditarProyecto.proyecto = proyecto;
   }
 
   @Override
@@ -166,6 +185,13 @@ public class NuevoProyecto implements Initializable {
         };
       }
     });
+
+    nombre.setText(proyecto.getNombre());
+    descripcion.setText(proyecto.getDescripcion());
+    file.imagenProyecto = proyecto.getImagen();
+    fecha_inicio.setValue(proyecto.getFecha_inicio().toLocalDate());
+    fecha_final.setValue(proyecto.getFecha_final().toLocalDate());
+
   }
 
 }

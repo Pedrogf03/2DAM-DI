@@ -6,7 +6,8 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-import DAO.FileFun;
+import Model.Prioridad;
+import Model.Proyecto;
 import Model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -22,16 +24,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
-public class NuevoProyecto implements Initializable {
+public class NuevaTarea implements Initializable {
 
-  private FileFun file = new FileFun();
   private static Usuario usuario;
+  private static Proyecto proyecto;
 
   @FXML
   private Button botonCerrar;
 
   @FXML
-  private Button botonCrearProyecto;
+  private Button botonCrearTarea;
 
   @FXML
   private TextArea descripcion;
@@ -46,10 +48,10 @@ public class NuevoProyecto implements Initializable {
   private DatePicker fecha_inicio;
 
   @FXML
-  private Button fileChooser;
+  private TextField nombre;
 
   @FXML
-  private TextField nombre;
+  private ChoiceBox<Prioridad> prioridad;
 
   @FXML
   void cerrar(ActionEvent event) throws IOException {
@@ -67,8 +69,9 @@ public class NuevoProyecto implements Initializable {
       alert.showAndWait().ifPresent(buttonType -> {
         if (buttonType == buttonTypeAceptar) {
           try {
-            Proyectos.setUsuario(usuario);
-            CodeFlow.setRoot("proyectos");
+            Tareas.setUsuario(usuario);
+            Tareas.setProyecto(proyecto);
+            CodeFlow.setRoot("tareas");
           } catch (IOException e) {
             e.printStackTrace();
           }
@@ -76,43 +79,45 @@ public class NuevoProyecto implements Initializable {
       });
 
     } else {
-      Proyectos.setUsuario(usuario);
-      CodeFlow.setRoot("proyectos");
+      Tareas.setUsuario(usuario);
+      Tareas.setProyecto(proyecto);
+      CodeFlow.setRoot("tareas");
     }
 
   }
 
   @FXML
-  void crearProyecto(ActionEvent event) throws IOException {
+  void crearTarea(ActionEvent event) throws IOException {
 
     // Comprobación de que no haya campos obligatorios en blanco.
     if (nombre.getText().equals("")) {
-      errorMsg.setText("Introduzca el nombre del proyecto");
+      errorMsg.setText("Introduzca el nombre de la tarea");
       errorMsg.setVisible(true);
     } else if (descripcion.getText().equals("")) {
-      errorMsg.setText("Introduzca la descripción del proyecto");
+      errorMsg.setText("Introduzca la descripción de la tarea");
       errorMsg.setVisible(true);
     } else if (fecha_inicio.getValue() == null) {
-      errorMsg.setText("Introduzca la fecha de inicio del proyecto.");
+      errorMsg.setText("Introduzca la fecha de inicio de la tarea");
       errorMsg.setVisible(true);
     } else if (fecha_final.getValue() == null) {
-      errorMsg.setText("Introduzca la fecha de final del proyecto.");
+      errorMsg.setText("Introduzca la fecha de final de la tarea");
       errorMsg.setVisible(true);
     } else if (fecha_final.getValue().compareTo(fecha_inicio.getValue()) < 0) {
       errorMsg.setText("La fecha de final no puede ser anterior a la fecha de inicio.");
       errorMsg.setVisible(true);
     } else {
 
-      if (usuario.crearProyecto(nombre.getText(), descripcion.getText(), file.imagenProyecto, Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()))) {
+      if (proyecto.crearTarea(nombre.getText(), descripcion.getText(), Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()), prioridad.getValue())) {
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Proyecto creado correctamente");
+        alert.setTitle("Tarea creada correctamente");
         alert.setHeaderText(null);
-        alert.setContentText("El proyecto se ha creado correctamente");
+        alert.setContentText("La tarea se ha creado correctamente");
 
         alert.showAndWait();
 
-        Proyectos.setUsuario(usuario);
-        CodeFlow.setRoot("proyectos");
+        Tareas.setUsuario(usuario);
+        Tareas.setProyecto(proyecto);
+        CodeFlow.setRoot("tareas");
       } else {
         errorMsg.setText("No se ha podido crear el proyecto.");
         errorMsg.setVisible(true);
@@ -122,21 +127,25 @@ public class NuevoProyecto implements Initializable {
 
   }
 
-  @FXML
-  void fileSelector(ActionEvent event) {
-    file.seleccionarImagen(fileChooser, event);
-  }
-
   public static Usuario getUsuario() {
     return usuario;
   }
 
   public static void setUsuario(Usuario usuario) {
-    NuevoProyecto.usuario = usuario;
+    NuevaTarea.usuario = usuario;
+  }
+
+  public static Proyecto getProyecto() {
+    return proyecto;
+  }
+
+  public static void setProyecto(Proyecto proyecto) {
+    NuevaTarea.proyecto = proyecto;
   }
 
   @Override
   public void initialize(URL location, ResourceBundle resources) {
+
     fecha_inicio.setDayCellFactory(new Callback<DatePicker, DateCell>() {
       @Override
       public DateCell call(DatePicker param) {
@@ -166,6 +175,9 @@ public class NuevoProyecto implements Initializable {
         };
       }
     });
+
+    prioridad.getItems().addAll(Prioridad.values());
+    prioridad.setValue(Prioridad.MEDIA);
   }
 
 }

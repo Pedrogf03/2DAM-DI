@@ -47,27 +47,35 @@ public class Usuario {
   }
 
   public List<Proyecto> getProyectos() {
-    return database.getProyectos(idUsuario);
+    this.proyectos = database.getProyectos(idUsuario);
+    return this.proyectos;
   }
 
   public List<Proyecto> getProyectosAlfabetico() {
-    return database.getProyectosAlfabetico(idUsuario);
+    this.proyectos = database.getProyectosAlfabetico(idUsuario);
+    return this.proyectos;
   }
 
   public List<Proyecto> getProyectosFin() {
-    return database.getProyectosFin(idUsuario);
+    this.proyectos = database.getProyectosFin(idUsuario);
+    return this.proyectos;
   }
 
   public List<Proyecto> getProyectosTareas() {
-    return database.getProyectosTareas(idUsuario);
+    this.proyectos = database.getProyectosTareas(idUsuario);
+    return this.proyectos;
   }
 
   public void setProyectos(List<Proyecto> proyectos) {
     this.proyectos = proyectos;
   }
 
-  public boolean crearProyecto(int idUsuario, String nombre, String descripcion, String imagen, Date fecha_inicio, Date fecha_final) {
-    return database.insertarProyecto(idUsuario, nombre, descripcion, imagen, fecha_inicio, fecha_final);
+  public boolean crearProyecto(String nombre, String descripcion, String imagen, Date fecha_inicio, Date fecha_final) {
+    return database.insertarProyecto(this.idUsuario, nombre, descripcion, imagen, fecha_inicio, fecha_final);
+  }
+
+  public boolean actualizarProyecto(int idProyecto, String nombre, String descripcion, String imagen, Date fecha_inicio, Date fecha_final) {
+    return database.updateProyecto(idProyecto, nombre, descripcion, imagen, fecha_inicio, fecha_final);
   }
 
 }

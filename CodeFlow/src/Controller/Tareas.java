@@ -58,13 +58,15 @@ public class Tareas implements Initializable {
   private Button botonCerrarInfo;
 
   @FXML
-  private Text nombreTarea;
+  private AnchorPane infoTarea;
   @FXML
-  private Text descripcionTarea;
+  private Text nombre;
   @FXML
-  private Text fechasTarea;
+  private Text descripcion;
   @FXML
-  private Text duracionTarea;
+  private Text fechas;
+  @FXML
+  private Text duracion;
 
   @FXML
   private ScrollPane scrollTareasEnProceso;
@@ -106,22 +108,22 @@ public class Tareas implements Initializable {
 
       long days = ChronoUnit.DAYS.between(t.getFecha_inicio().toLocalDate(), t.getFecha_final().toLocalDate());
 
-      Text duracion = new Text("" + days);
+      Text duracionTarea = new Text("Días: " + days);
 
       nombreTarea.setFont(new Font("Consolas", 14));
       fechasTarea.setFont(new Font("Consolas", 14));
-      duracion.setFont(new Font("Consolas", 12));
+      duracionTarea.setFont(new Font("Consolas", 12));
       nombreTarea.setFill(Color.WHITE);
       fechasTarea.setFill(Color.WHITE);
-      duracion.setFill(Color.WHITE);
+      duracionTarea.setFill(Color.WHITE);
       fechasTarea.setWrappingWidth(200);
       fechasTarea.setTextAlignment(TextAlignment.CENTER);
-      duracion.setWrappingWidth(200);
-      duracion.setTextAlignment(TextAlignment.CENTER);
+      duracionTarea.setWrappingWidth(200);
+      duracionTarea.setTextAlignment(TextAlignment.CENTER);
 
       VBox tarea = new VBox(5);
 
-      tarea.getChildren().addAll(nombreTarea, fechasTarea, duracion);
+      tarea.getChildren().addAll(nombreTarea, fechasTarea, duracionTarea);
 
       VBox.setMargin(tarea, new Insets(5, 10, 5, 10));
       tarea.setPadding(new Insets(10, 10, 10, 10));
@@ -143,20 +145,18 @@ public class Tareas implements Initializable {
 
       }
 
-      // Añadir un evento al hacer click en la tarea.
       EventHandler<MouseEvent> eventHandler = new EventHandler<MouseEvent>() {
         @Override
         public void handle(MouseEvent event) {
-
-          nombreTarea.setText(nombreTarea.getText());
-          fechasTarea.setText(fechasTarea.getText());
-          duracionTarea.setText(duracion.getText());
-          descripcionTarea.setText(t.getDescripcion());
-
           tareaActual = t;
 
-          tarea.setVisible(true);
-          tarea.setDisable(false);
+          nombre.setText(nombreTarea.getText());
+          fechas.setText(fechasTarea.getText());
+          duracion.setText(duracionTarea.getText());
+          descripcion.setText(t.getDescripcion());
+
+          infoTarea.setVisible(true);
+          infoTarea.setDisable(false);
 
         }
       };
@@ -195,38 +195,52 @@ public class Tareas implements Initializable {
   }
 
   @FXML
-  void borrarTarea(ActionEvent event) {
+  void editarProyecto(ActionEvent event) throws IOException {
+    EditarProyecto.setUsuario(usuario);
+    EditarProyecto.setProyecto(proyecto);
+    CodeFlow.setRoot("editarProyecto");
+  }
 
+  @FXML
+  void crearTarea(ActionEvent event) throws IOException {
+    NuevaTarea.setUsuario(usuario);
+    NuevaTarea.setProyecto(proyecto);
+    CodeFlow.setRoot("nuevaTarea");
   }
 
   @FXML
   void cerrarInfo(ActionEvent event) {
-
+    infoTarea.setVisible(false);
+    infoTarea.setDisable(true);
   }
 
   @FXML
-  void editarProyecto(ActionEvent event) {
+  void borrarTarea(ActionEvent event) {
+    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    alert.setTitle("Confirmación");
+    alert.setHeaderText("¿Seguro que quiere borrar esta tarea?");
+    alert.setContentText("Todos los datos se perderán.");
 
+    ButtonType buttonTypeAceptar = new ButtonType("Aceptar");
+    ButtonType buttonTypeCancelar = new ButtonType("Cancelar");
+    alert.getButtonTypes().setAll(buttonTypeAceptar, buttonTypeCancelar);
+
+    alert.showAndWait().ifPresent(buttonType -> {
+      if (buttonType == buttonTypeAceptar) {
+        tareaActual.borrar();
+        tareaActual = null;
+        cerrarInfo(event);
+        mostrarTareas();
+      }
+    });
   }
 
   @FXML
-  void editarTarea(ActionEvent event) {
-
-  }
-
-  @FXML
-  void mostrarInfoTarea(MouseEvent event) {
-
-  }
-
-  @FXML
-  void showNewTaskTab(ActionEvent event) {
-
-  }
-
-  @FXML
-  void crearTarea(ActionEvent event) {
-
+  void editarTarea(ActionEvent event) throws IOException {
+    EditarTarea.setUsuario(usuario);
+    EditarTarea.setProyecto(proyecto);
+    EditarTarea.setTarea(tareaActual);
+    CodeFlow.setRoot("editarTarea");
   }
 
   public static Proyecto getProyecto() {

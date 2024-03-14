@@ -129,24 +129,24 @@
             </ScrollPane>
          </children>
       </HBox>
-      <AnchorPane fx:id="botonInfoTarea" disable="true" layoutX="194.0" layoutY="66.0" onDragDetected="#mostrarInfoTarea" prefHeight="368.0" prefWidth="510.0" style="-fx-background-color: #0C1640;" visible="false">
+      <AnchorPane fx:id="infoTarea" disable="true" layoutX="194.0" layoutY="66.0" prefHeight="368.0" prefWidth="510.0" style="-fx-background-color: #0C1640;" visible="false">
          <children>
-            <Text fx:id="nombreTarea" fill="#ffc107" layoutX="14.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NombreTarea">
+            <Text fx:id="nombre" fill="#ffc107" layoutX="14.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="NombreTarea">
                <font>
                   <Font name="Franklin Gothic Demi" size="36.0" />
                </font>
             </Text>
-            <Text fx:id="fechasTarea" fill="WHITE" layoutX="14.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FechaInicio - FechaFinal">
+            <Text fx:id="fechas" fill="WHITE" layoutX="14.0" layoutY="99.0" strokeType="OUTSIDE" strokeWidth="0.0" text="FechaInicio - FechaFinal">
                <font>
                   <Font name="Consolas" size="24.0" />
                </font>
             </Text>
-            <Text fx:id="duracionTarea" fill="WHITE" layoutX="14.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion">
+            <Text fx:id="duracion" fill="WHITE" layoutX="14.0" layoutY="127.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Duracion">
                <font>
                   <Font name="Consolas" size="24.0" />
                </font>
             </Text>
-            <Text fx:id="descripcionTarea" fill="WHITE" layoutX="15.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion de la tarea, lorem ipsum dolor sit amet" textAlignment="JUSTIFY" wrappingWidth="480.0">
+            <Text fx:id="descripcion" fill="WHITE" layoutX="15.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripcion de la tarea, lorem ipsum dolor sit amet" textAlignment="JUSTIFY" wrappingWidth="480.0">
                <font>
                   <Font name="Consolas" size="24.0" />
                </font>

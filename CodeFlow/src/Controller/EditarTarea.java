@@ -6,7 +6,9 @@ import java.sql.Date;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-import DAO.FileFun;
+import Model.Prioridad;
+import Model.Proyecto;
+import Model.Tarea;
 import Model.Usuario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DateCell;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextArea;
@@ -22,16 +25,17 @@ import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 
-public class NuevoProyecto implements Initializable {
+public class EditarTarea implements Initializable {
 
-  private FileFun file = new FileFun();
   private static Usuario usuario;
+  private static Proyecto proyecto;
+  private static Tarea tarea;
 
   @FXML
   private Button botonCerrar;
 
   @FXML
-  private Button botonCrearProyecto;
+  private Button botonEditarTarea;
 
   @FXML
   private TextArea descripcion;
@@ -46,10 +50,10 @@ public class NuevoProyecto implements Initializable {
   private DatePicker fecha_inicio;
 
   @FXML
-  private Button fileChooser;
+  private TextField nombre;
 
   @FXML
-  private TextField nombre;
+  private ChoiceBox<Prioridad> prioridad;
 
   @FXML
   void cerrar(ActionEvent event) throws IOException {
@@ -67,8 +71,9 @@ public class NuevoProyecto implements Initializable {
       alert.showAndWait().ifPresent(buttonType -> {
         if (buttonType == buttonTypeAceptar) {
           try {
-            Proyectos.setUsuario(usuario);
-            CodeFlow.setRoot("proyectos");
+            Tareas.setUsuario(usuario);
+            Tareas.setProyecto(proyecto);
+            CodeFlow.setRoot("tareas");
           } catch (IOException e) {
             e.printStackTrace();
           }
@@ -76,14 +81,15 @@ public class NuevoProyecto implements Initializable {
       });
 
     } else {
-      Proyectos.setUsuario(usuario);
-      CodeFlow.setRoot("proyectos");
+      Tareas.setUsuario(usuario);
+      Tareas.setProyecto(proyecto);
+      CodeFlow.setRoot("tareas");
     }
 
   }
 
   @FXML
-  void crearProyecto(ActionEvent event) throws IOException {
+  void editarTarea(ActionEvent event) throws IOException {
 
     // Comprobación de que no haya campos obligatorios en blanco.
     if (nombre.getText().equals("")) {
@@ -103,18 +109,25 @@ public class NuevoProyecto implements Initializable {
       errorMsg.setVisible(true);
     } else {
 
-      if (usuario.crearProyecto(nombre.getText(), descripcion.getText(), file.imagenProyecto, Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()))) {
+      if (proyecto.actualizarTarea(tarea.getIdTarea(), nombre.getText(), descripcion.getText(), Date.valueOf(fecha_inicio.getValue()), Date.valueOf(fecha_final.getValue()), prioridad.getValue())) {
+        tarea.setNombre(nombre.getText());
+        tarea.setDescripcion(descripcion.getText());
+        tarea.setFecha_inicio(Date.valueOf(fecha_inicio.getValue()));
+        tarea.setFecha_final(Date.valueOf(fecha_final.getValue()));
+        tarea.setPrioridad(prioridad.getValue());
+
         Alert alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Proyecto creado correctamente");
+        alert.setTitle("Tarea actualizada correctamente");
         alert.setHeaderText(null);
-        alert.setContentText("El proyecto se ha creado correctamente");
+        alert.setContentText("La tarea se ha actualizado correctamente");
 
         alert.showAndWait();
 
-        Proyectos.setUsuario(usuario);
-        CodeFlow.setRoot("proyectos");
+        Tareas.setUsuario(usuario);
+        Tareas.setProyecto(proyecto);
+        CodeFlow.setRoot("tareas");
       } else {
-        errorMsg.setText("No se ha podido crear el proyecto.");
+        errorMsg.setText("No se ha podido actualizar La tarea");
         errorMsg.setVisible(true);
       }
 
@@ -122,17 +135,28 @@ public class NuevoProyecto implements Initializable {
 
   }
 
-  @FXML
-  void fileSelector(ActionEvent event) {
-    file.seleccionarImagen(fileChooser, event);
-  }
-
   public static Usuario getUsuario() {
     return usuario;
   }
 
   public static void setUsuario(Usuario usuario) {
-    NuevoProyecto.usuario = usuario;
+    EditarTarea.usuario = usuario;
+  }
+
+  public static Proyecto getProyecto() {
+    return proyecto;
+  }
+
+  public static void setProyecto(Proyecto proyecto) {
+    EditarTarea.proyecto = proyecto;
+  }
+
+  public static Tarea getTarea() {
+    return tarea;
+  }
+
+  public static void setTarea(Tarea tarea) {
+    EditarTarea.tarea = tarea;
   }
 
   @Override
@@ -166,6 +190,14 @@ public class NuevoProyecto implements Initializable {
         };
       }
     });
+
+    nombre.setText(tarea.getNombre());
+    descripcion.setText(tarea.getDescripcion());
+    fecha_inicio.setValue(tarea.getFecha_inicio().toLocalDate());
+    fecha_final.setValue(tarea.getFecha_final().toLocalDate());
+    prioridad.getItems().addAll(Prioridad.values());
+    prioridad.setValue(tarea.getPrioridad());
+
   }
 
 }

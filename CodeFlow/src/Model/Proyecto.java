@@ -38,8 +38,6 @@ public class Proyecto {
     this.fecha_inicio = fecha_inicio;
     this.fecha_final = fecha_final;
 
-    this.tareas = database.getTareas(this.idProyecto);
-
   }
 
   public int getIdProyecto() {
@@ -99,7 +97,8 @@ public class Proyecto {
   }
 
   public List<Tarea> getTareas() {
-    return tareas;
+    this.tareas = database.getTareas(this.idProyecto);
+    return this.tareas;
   }
 
   public void setTareas(List<Tarea> tareas) {
@@ -108,6 +107,14 @@ public class Proyecto {
 
   public boolean borrar() {
     return database.deleteProyecto(this.idProyecto);
+  }
+
+  public boolean crearTarea(String nombre, String descripcion, Date fecha_inicio, Date fecha_final, Prioridad prioridad) {
+    return database.insertarTarea(this.idProyecto, nombre, descripcion, fecha_inicio, fecha_final, prioridad.toString());
+  }
+
+  public boolean actualizarTarea(int idTarea, String nombre, String descripcion, Date fecha_inicio, Date fecha_final, Prioridad prioridad) {
+    return database.updateTarea(idTarea, nombre, descripcion, fecha_inicio, fecha_final, prioridad.toString());
   }
 
 }

@@ -157,7 +157,7 @@ public class DB {
 
     try {
 
-      PreparedStatement ps = conn.prepareStatement("SELECT p.* FROM proyecto p WHERE idUsuario = ? ORDER BY (SELECT count(idTarea) FROM tarea t WHERE t.idProyecto = p.idProyecto) ASC");
+      PreparedStatement ps = conn.prepareStatement("SELECT p.* FROM proyecto p WHERE idUsuario = ? ORDER BY (SELECT count(idTarea) FROM tarea t WHERE t.idProyecto = p.idProyecto) DESC");
       ps.setInt(1, idUsuario);
       ResultSet rs = ps.executeQuery();
 
@@ -186,6 +186,34 @@ public class DB {
       ps.setString(4, imagen);
       ps.setDate(5, fecha_inicio);
       ps.setDate(6, fecha_final);
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+
+  public boolean updateProyecto(int idProyecto, String nombre, String descripcion, String imagen, Date fecha_inicio, Date fecha_final) {
+
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("UPDATE proyecto SET nombre = ?, descripcion = ?, imagen = ?, fecha_inicio = ?, fecha_final = ? WHERE idProyecto = ?");
+
+      ps.setString(1, nombre);
+      ps.setString(2, descripcion);
+      ps.setString(3, imagen);
+      ps.setDate(4, fecha_inicio);
+      ps.setDate(5, fecha_final);
+      ps.setInt(6, idProyecto);
 
       int rows = ps.executeUpdate();
 
@@ -253,6 +281,83 @@ public class DB {
     }
 
     return tareas;
+
+  }
+
+  public boolean insertarTarea(int idProyecto, String nombre, String descripcion, Date fecha_inicio, Date fecha_final, String prioridad) {
+
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("INSERT INTO tarea (idProyecto, nombre, descripcion, fecha_inicio, fecha_final, prioridad) VALUES (?,?,?,?,?,?)");
+
+      ps.setInt(1, idProyecto);
+      ps.setString(2, nombre);
+      ps.setString(3, descripcion);
+      ps.setDate(4, fecha_inicio);
+      ps.setDate(5, fecha_final);
+      ps.setString(6, prioridad);
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+
+  }
+
+  public boolean deleteTarea(int idTarea) {
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("DELETE FROM tarea WHERE idTarea = ?");
+
+      ps.setInt(1, idTarea);
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
+  }
+
+  public boolean updateTarea(int idTarea, String nombre, String descripcion, Date fecha_inicio, Date fecha_final, String prioridad) {
+
+    try {
+
+      PreparedStatement ps = conn.prepareStatement("UPDATE tarea SET nombre = ?, descripcion = ?, fecha_inicio = ?, fecha_final = ?, prioridad = ? WHERE idTarea = ?");
+
+      ps.setString(1, nombre);
+      ps.setString(2, descripcion);
+      ps.setDate(3, fecha_inicio);
+      ps.setDate(4, fecha_final);
+      ps.setString(5, prioridad.toString());
+      ps.setInt(6, idTarea);
+
+      int rows = ps.executeUpdate();
+
+      if (rows > 0) {
+        return true;
+      } else {
+        return false;
+      }
+
+    } catch (SQLException e) {
+      e.printStackTrace();
+      return false;
+    }
 
   }
 
